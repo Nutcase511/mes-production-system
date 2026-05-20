@@ -80,13 +80,13 @@ const TextFilter = (props: any) => {
   const { label } = props
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Input
         value={value}
         onChange={(e) => onValueChange(e.target.value || undefined)}
         onKeyDown={onKeyPress}
         placeholder={label}
-        className="pr-8"
+        className="pr-8 bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50"
       />
       <div className="absolute right-2 top-1/2 -translate-y-1/2">
         {changeModeBtn}

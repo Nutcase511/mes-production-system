@@ -19,21 +19,21 @@ const FilterNumber = (props: any) => {
   }
 
   return (
-    <div className="inline-flex items-center gap-2">
+    <div className="inline-flex items-center gap-2 w-full">
       <Input
         {...inputProps}
         type="number"
-        className={cn(props.style?.width ? 'w-auto' : 'w-24')}
+        className={cn(props.style?.width ? 'w-auto' : 'w-24 bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50')}
         style={props.style}
         value={gte}
         placeholder={props.minimum ? `最小值(${props.minimum})` : '无限制'}
         onChange={(e) => inputChange(e.target.value, 'gte')}
       />
-      <span className="text-muted-foreground">~</span>
+      <span className="text-blue-200">~</span>
       <Input
         {...inputProps}
         type="number"
-        className={cn(props.style?.width ? 'w-auto' : 'w-24')}
+        className={cn(props.style?.width ? 'w-auto' : 'w-24 bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50')}
         style={props.style}
         value={lte}
         placeholder={props.maximum ? `最大值(${props.maximum})` : '无限制'}

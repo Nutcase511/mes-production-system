@@ -10,7 +10,10 @@ import { cn } from '@/lib/utils'
 const FilterEnum = (props: any) => {
   const { value, onChange, schema } = props
   const placeholder = schema && schema.placeholder
-  const titleMap = schema && schema.enum ? schema.enum.map((k: string, index: number) => ({ value: k, name: schema.enumNames[index] || k })) : []
+  // 支持 AIRIOT 的 enum1/enum_title1 格式和标准的 enum/enumNames 格式
+  const enumValues = schema?.enum1 || schema?.enum
+  const enumNames = schema?.enum_title1 || schema?.enumNames
+  const titleMap = enumValues ? enumValues.map((k: string, index: number) => ({ value: k, name: enumNames?.[index] || k })) : []
   const [open, setOpen] = useState(false)
 
   // 初始化选中的值
@@ -58,7 +61,7 @@ const FilterEnum = (props: any) => {
         <button
           type="button"
           className={cn(
-            'flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-w-37.5',
+            'flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-w-37.5 bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50',
             selectedNames.length > 0 && 'h-auto min-h-10 py-1'
           )}
         >
@@ -95,7 +98,7 @@ const FilterEnum = (props: any) => {
           }
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-2" align="start">
+      <PopoverContent className="w-full p-2 bg-slate-900/95 border-blue-400/30" align="start">
         <div className="space-y-1">
           {titleMap && titleMap.length > 0 ? (
             titleMap.map((item: any) => {
@@ -104,18 +107,18 @@ const FilterEnum = (props: any) => {
                 <div
                   key={item.value}
                   className={cn(
-                    "flex items-center gap-2 px-2 py-1.5 rounded-sm cursor-pointer hover:bg-accent transition-colors",
-                    isSelected && "bg-accent"
+                    "flex items-center gap-2 px-3 py-2 rounded-sm cursor-pointer transition-colors text-blue-200",
+                    isSelected ? "bg-blue-500/40 hover:bg-blue-500/50" : "hover:bg-blue-500/20"
                   )}
                   onClick={() => handleToggle(item.value)}
                 >
                   <span className="flex-1">{item.name}</span>
-                  {isSelected && <Check className="h-4 w-4 text-primary" />}
+                  {isSelected && <Check className="h-4 w-4 text-cyan-300" />}
                 </div>
               )
             })
           ) : (
-            <div className="text-sm text-muted-foreground py-2">暂无选项</div>
+            <div className="text-sm text-blue-300/70 py-2">暂无选项</div>
           )}
         </div>
       </PopoverContent>

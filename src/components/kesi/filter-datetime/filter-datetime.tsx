@@ -152,18 +152,18 @@ const FilterDatetime: React.FC<FilterDatetimeProps> = ({ value, onChange, dateti
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 w-full">
       {/* 开始日期时间选择器 */}
       <div className="flex-1">
         <Popover open={startOpen} onOpenChange={handleStartOpenChange}>
           <PopoverTrigger asChild>
             <div className="w-full">
-              <InputGroup className="h-10">
+              <InputGroup className="h-10 bg-blue-500/10 border-blue-400/30">
                 <InputGroupInput
                   value={formatDisplayValue(startDate)}
                   placeholder="起始时间"
                   readOnly
-                  className="cursor-pointer"
+                  className="cursor-pointer text-blue-200 placeholder:text-blue-300/50"
                 />
                 <InputGroupAddon align="inline-end">
                   {startDate && (
@@ -172,16 +172,16 @@ const FilterDatetime: React.FC<FilterDatetimeProps> = ({ value, onChange, dateti
                       size="icon-xs"
                       onClick={handleStartClear}
                     >
-                      <XIcon className="h-3 w-3" />
+                      <XIcon className="h-3 w-3 text-blue-200" />
                     </InputGroupButton>
                   )}
-                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+                  <CalendarIcon className="h-4 w-4 text-blue-200" />
                 </InputGroupAddon>
               </InputGroup>
             </div>
           </PopoverTrigger>
           <PopoverContent
-            className="w-auto overflow-hidden p-0"
+            className="w-auto overflow-hidden p-0 bg-slate-900/95 border-blue-400/30"
             align="end"
             alignOffset={-8}
             sideOffset={10}
@@ -210,19 +210,19 @@ const FilterDatetime: React.FC<FilterDatetimeProps> = ({ value, onChange, dateti
         </Popover>
       </div>
 
-      <span className="text-muted-foreground">到</span>
+      <span className="text-blue-200">到</span>
 
       {/* 结束日期时间选择器 */}
       <div className="flex-1">
         <Popover open={endOpen} onOpenChange={handleEndOpenChange}>
           <PopoverTrigger asChild>
             <div className="w-full">
-              <InputGroup className="h-10">
+              <InputGroup className="h-10 bg-blue-500/10 border-blue-400/30">
                 <InputGroupInput
                   value={formatDisplayValue(endDate)}
                   placeholder="结束时间"
                   readOnly
-                  className="cursor-pointer"
+                  className="cursor-pointer text-blue-200 placeholder:text-blue-300/50"
                 />
                 <InputGroupAddon align="inline-end">
                   {endDate && (
@@ -231,16 +231,16 @@ const FilterDatetime: React.FC<FilterDatetimeProps> = ({ value, onChange, dateti
                       size="icon-xs"
                       onClick={handleEndClear}
                     >
-                      <XIcon className="h-3 w-3" />
+                      <XIcon className="h-3 w-3 text-blue-200" />
                     </InputGroupButton>
                   )}
-                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+                  <CalendarIcon className="h-4 w-4 text-blue-200" />
                 </InputGroupAddon>
               </InputGroup>
             </div>
           </PopoverTrigger>
           <PopoverContent
-            className="w-auto overflow-hidden p-0"
+            className="w-auto overflow-hidden p-0 bg-slate-900/95 border-blue-400/30"
             align="end"
             alignOffset={-8}
             sideOffset={10}

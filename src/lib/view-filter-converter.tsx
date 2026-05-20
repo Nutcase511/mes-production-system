@@ -19,7 +19,8 @@ const filterConverter = (schema: any, filterSchema: any) => {
   if (!controlType) {
     const type = schema?.type
     const format = filterSchema?.format || schema?.format
-    const isEnum = filterSchema?.enum || schema?.enum
+    // 支持 enum1/enum_title1 (AIRIOT 字段格式) 和 enum/enumNames
+    const isEnum = filterSchema?.enum1 || filterSchema?.enum || schema?.enum
     if (isEnum) {
       return FilterEnum
     } else if (['date', 'date-time', 'datetime'].includes(format)) {
@@ -56,6 +57,7 @@ const filterConverter = (schema: any, filterSchema: any) => {
       case 'select-number':
       case 'select-array-string':
       case 'select-array-number':
+      case 'filter_enum':
         return FilterEnum
       default:
         return () => 'The filter component is defined'

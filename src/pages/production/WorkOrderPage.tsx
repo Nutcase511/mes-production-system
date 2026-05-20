@@ -1,5 +1,5 @@
 // @ts-ignore
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -10,13 +10,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useModel, useSetModelState, useModelGetItems, useModelList, createAPI } from '@airiot/client'
-import _ from 'lodash'
+import { useModel, useModelState, useModelGetItems, useModelList } from '@airiot/client'
 
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { DataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
-import ViewFilter from '@/components/kesi/view-filter/view-filter'
+import FilterSchemaForm from '@/components/kesi/filter-form/filter-form'
 import Actions, { CreateAction } from '@/components/kesi/view-actions/view-actions'
 import ProcessRecordView from '@/components/ProcessRecordView'
 import { List } from 'lucide-react'
@@ -24,11 +23,74 @@ import { LoadingDots } from '@/components/ui/loading-dots'
 
 const tableId = '生产跟单'
 
+const filterFields = [
+  {
+    key: 'batchOrderNo',
+    name: 'batchOrderNo',
+    title: '生产令号',
+    fieldType: 'filter_string',
+    orientation: 'horizontal' as const,
+  },
+  {
+    key: 'productName',
+    name: 'productName',
+    title: '产品名称',
+    fieldType: 'filter_string',
+    orientation: 'horizontal' as const,
+  },
+  {
+    key: 'productionStatus',
+    name: 'productionStatus',
+    title: '生产状态',
+    fieldType: 'filter_enum',
+    enum1: ['0', '1', '2', '3', '4', '5', '6'],
+    enum_title1: ['未开始', '待试产', '试产通过', '试产完成', '生产中', '生产完成', '生产中(正式)'],
+    orientation: 'horizontal' as const,
+  },
+  {
+    key: 'preparationStatus',
+    name: 'preparationStatus',
+    title: '准备状态',
+    fieldType: 'filter_enum',
+    enum1: ['1', '2'],
+    enum_title1: ['待检查', '已完成'],
+    orientation: 'horizontal' as const,
+  },
+]
+
 // WorkOrderContent 组件
 const WorkOrderContent: React.FC = () => {
   const { model } = useModel()
   const { items, loading } = useModelList({ initQuery: false })
+  const [wheres, setWheres] = useModelState('wheres')
   const { getItems } = useModelGetItems()
+
+  // 初始化查询
+  const initializedRef = useRef(false)
+  useEffect(() => {
+    if (model?.properties && !initializedRef.current) {
+      initializedRef.current = true
+      const fields = Object.keys(model.properties)
+      const query = {
+        fields: fields,
+        withCount: true
+      }
+      getItems(query)
+    }
+  }, [model, getItems])
+
+  const onSubmit = (value: any) => {
+    const newWheres = { ...(wheres || {}), filter: { ...(wheres?.filter || {}), ...value } }
+    setWheres(newWheres)
+    getItems({ projectAll: true })
+  }
+
+  const onReset = (reset: () => void) => {
+    reset()
+    const newWheres = { ...(wheres || {}), filter: {} }
+    setWheres(newWheres)
+    getItems({ projectAll: true })
+  }
 
   // 从 model.form 获取字段顺序（model 本身就是 schema）
   const fieldOrder = useMemo(() => {
@@ -185,23 +247,6 @@ const WorkOrderContent: React.FC = () => {
   const [showProcessRecordDialog, setShowProcessRecordDialog] = useState(false)
   const [selectedWorkOrder, setSelectedWorkOrder] = useState<any>(null)
 
-  // 初始化查询：从 schema 获取所有字段
-  const initializedRef = useRef(false)
-  useEffect(() => {
-    if (model?.properties && !initializedRef.current) {
-      initializedRef.current = true
-      const fields = Object.keys(model.properties)
-
-      // 构建查询参数
-      const query = {
-        fields: fields,  // 查询所有字段，包括 partProductionRecords 和 processRecord
-        withCount: true,
-      }
-
-      getItems(query)
-    }
-  }, [model])
-
   // 查看工序记录
   const handleViewProcessRecord = (item: any) => {
     setSelectedWorkOrder(item)
@@ -214,26 +259,38 @@ const WorkOrderContent: React.FC = () => {
       <Card className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden p-4 mb-4" style={{
         borderColor: 'rgba(59, 130, 246, 0.3)'
       }}>
-        <div className="flex flex-row items-end gap-4 flex-wrap w-full">
-          <ViewFilter
-            classNames={{
-              form: 'flex flex-row items-end gap-4 flex-wrap flex-1 min-w-0',
-              group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
-              field: 'flex flex-row items-center gap-2 w-auto',
-              label: 'text-blue-200 whitespace-nowrap text-sm',
-              input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 min-w-[200px]',
-              description: '',
-              error: ''
-            }}
-          />
-          <div className="flex gap-2 items-center shrink-0">
-            <CreateAction modelId={tableId}>
-              <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                + 新建跟单
+        <FilterSchemaForm
+          formId="work-order-filter"
+          schema={{ ...model, properties: model?.properties || {} }}
+          formSchema={filterFields}
+          onSubmit={onSubmit}
+          classNames={{
+            form: 'flex flex-row items-end gap-4 flex-wrap w-full',
+            group: 'flex flex-row items-end gap-4 flex-1 min-w-[200px]',
+            field: 'w-full',
+            label: 'text-blue-200 whitespace-nowrap !w-[70px] !flex-none text-sm',
+            input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-full',
+            description: '',
+            error: '',
+            orientation: 'horizontal',
+          }}
+        >
+          {(methods) => (
+            <div className="flex items-center gap-2">
+              <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 h-9 text-sm">
+                搜索
               </Button>
-            </CreateAction>
-          </div>
-        </div>
+              <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
+                重置
+              </Button>
+              <CreateAction modelId={tableId}>
+                <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+                  + 新建跟单
+                </Button>
+              </CreateAction>
+            </div>
+          )}
+        </FilterSchemaForm>
       </Card>
 
       {/* 数据表格 */}
@@ -290,21 +347,9 @@ const WorkOrderContent: React.FC = () => {
 }
 
 export function WorkOrderPage() {
-  const [schema, setSchema] = useState<any>(null)
-  useEffect(() => {
-    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
-      .then((res: any) => {
-        if (res?.schema) setSchema(res.schema)
-        else if (res?.properties) setSchema(res)
-        else setSchema(res)
-      })
-      .catch(console.error)
-  }, [])
-  const queryFields = schema?.properties ? Object.keys(schema.properties) : undefined
-
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} queryFields={queryFields} initQuery={false}>
+      <ViewModel tableId={tableId} initQuery={false}>
           <WorkOrderContent />
         </ViewModel>
     </div>

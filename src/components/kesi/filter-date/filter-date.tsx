@@ -81,8 +81,8 @@ const FilterDate = (props: any) => {
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-start text-left font-normal shrink",
-            !dateRange && "text-muted-foreground"
+            "w-full justify-start text-left font-normal shrink bg-blue-500/10 border-blue-400/30 text-blue-200 hover:bg-blue-500/20",
+            !dateRange && "placeholder:text-blue-300/50"
           )}
         >
           {dateRange ? (

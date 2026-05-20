@@ -8,7 +8,7 @@ const FilterBool = (props: any) => {
   const disabled = (value === null || value === undefined || value === '')
 
   return (
-    <div className='w-25! flex items-center justify-around'>
+    <div className='w-full flex items-center justify-around gap-2'>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -16,11 +16,13 @@ const FilterBool = (props: any) => {
               <Checkbox
                 checked={false}
                 onCheckedChange={() => onChange(true)}
+                className="border-blue-400/30"
               />
             ) : (
               <Checkbox
                 checked={true}
                 onCheckedChange={() => onChange(null)}
+                className="border-blue-400/30"
               />
             )}
           </TooltipTrigger>
@@ -35,7 +37,7 @@ const FilterBool = (props: any) => {
         disabled={disabled}
         onCheckedChange={onChange}
       />
-      <span className="text-sm text-muted-foreground">
+      <span className="text-sm text-blue-200">
         {value ? (boolLabel?.[0] || '真') : (boolLabel?.[1] || '假')}
       </span>
     </div>
