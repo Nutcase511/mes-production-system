@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { useModelList, useModel, useModelSave, useModelGetItems } from '@airiot/client'
+import { useModelList, useModel, useModelSave, useModelGetItems, createAPI } from '@airiot/client'
 import { getToken } from '@/lib/auth-token'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
@@ -1048,9 +1048,21 @@ export function PreparationChecklistPage() {
     ]
   }
 
+  const [schema, setSchema] = useState<any>(null)
+  useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        if (res?.schema) setSchema(res.schema)
+        else if (res?.properties) setSchema(res)
+        else setSchema(res)
+      })
+      .catch(console.error)
+  }, [])
+  const queryFields = schema?.properties ? Object.keys(schema.properties) : undefined
+
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} tableFilters={tableFilters}>
+      <ViewModel tableId={tableId} queryFields={queryFields} tableFilters={tableFilters}>
         <PreparationChecklistContent />
       </ViewModel>
     </div>

@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useModel, useSetModelState, useModelGetItems, useModelList } from '@airiot/client'
+import { useModel, useSetModelState, useModelGetItems, useModelList, createAPI } from '@airiot/client'
 import _ from 'lodash'
 
 import ViewModel from '@/components/kesi/view-model/view-model'
@@ -290,9 +290,21 @@ const WorkOrderContent: React.FC = () => {
 }
 
 export function WorkOrderPage() {
+  const [schema, setSchema] = useState<any>(null)
+  useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        if (res?.schema) setSchema(res.schema)
+        else if (res?.properties) setSchema(res)
+        else setSchema(res)
+      })
+      .catch(console.error)
+  }, [])
+  const queryFields = schema?.properties ? Object.keys(schema.properties) : undefined
+
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={false}>
+      <ViewModel tableId={tableId} queryFields={queryFields} initQuery={false}>
           <WorkOrderContent />
         </ViewModel>
     </div>
