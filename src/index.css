@@ -1,0 +1,400 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* CSS 变量 - 颜色系统 */
+  --color-background: oklch(var(--background));
+  --color-foreground: oklch(var(--foreground));
+  --color-card: oklch(var(--card));
+  --color-card-foreground: oklch(var(--card-foreground));
+  --color-popover: oklch(var(--popover));
+  --color-popover-foreground: oklch(var(--popover-foreground));
+  --color-primary: oklch(var(--primary));
+  --color-primary-foreground: oklch(var(--primary-foreground));
+  --color-secondary: oklch(var(--secondary));
+  --color-secondary-foreground: oklch(var(--secondary-foreground));
+  --color-muted: oklch(var(--muted));
+  --color-muted-foreground: oklch(var(--muted-foreground));
+  --color-accent: oklch(var(--accent));
+  --color-accent-foreground: oklch(var(--accent-foreground));
+  --color-destructive: oklch(var(--destructive));
+  --color-destructive-foreground: oklch(var(--destructive-foreground));
+  --color-border: oklch(var(--border));
+  --color-input: oklch(var(--input));
+  --color-ring: oklch(var(--ring));
+  --color-success: oklch(var(--success));
+  --color-warning: oklch(var(--warning));
+  --color-error: oklch(var(--error));
+  --color-info: oklch(var(--info));
+  --color-industrial-gray: oklch(var(--industrial-gray));
+  --color-industrial-orange: oklch(var(--industrial-orange));
+  --color-industrial-green: oklch(var(--industrial-green));
+  --color-neon-cyan: #22d3ee;
+  --color-neon-blue: #60a5fa;
+  --color-neon-green: #4ade80;
+  --color-neon-purple: #c084fc;
+
+  /* 霓虹科技风 - 发光效果 */
+  --glow-cyan: 0 0 20px rgba(34, 211, 238, 0.5), 0 0 40px rgba(34, 211, 238, 0.3);
+  --glow-blue: 0 0 20px rgba(96, 165, 250, 0.5), 0 0 40px rgba(96, 165, 250, 0.3);
+  --glow-green: 0 0 20px rgba(74, 222, 128, 0.5), 0 0 40px rgba(74, 222, 128, 0.3);
+  --glow-orange: 0 0 20px rgba(251, 146, 60, 0.5), 0 0 40px rgba(251, 146, 60, 0.3);
+
+  /* 渐变边框 */
+  --gradient-cyan-blue: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #60a5fa 100%);
+  --gradient-tech: linear-gradient(135deg, #22d3ee 0%, #3b82f6 50%, #8b5cf6 100%);
+
+  /* 科技纹理背景 */
+  --tech-grid: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 19px,
+    rgba(34, 211, 238, 0.03) 20px
+  ),
+  repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 19px,
+    rgba(34, 211, 238, 0.03) 20px
+  );
+
+  /* 扫描线动画 */
+  --scan-line: linear-gradient(
+    180deg,
+    transparent,
+    rgba(34, 211, 238, 0.1) 50%,
+    transparent
+  );
+
+  /* 圆角 */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* 阴影 */
+  --shadow-industrial: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-industrial-lg: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  /* Z-index */
+  --z-0: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-100: 100;
+
+  /* 最小宽度/高度 */
+  --min-w-44: 11rem;
+  --min-h-44: 11rem;
+
+  /* backdrop-blur */
+  --backdrop-blur-xs: 2px;
+}
+
+/* ========== CSS 变量定义 ========== */
+:root {
+  /* ========== 深蓝科技风 - 专业MES系统配色 ========== */
+  /* 高对比度、清晰可读、科技感十足 */
+
+  /* 背景色 - 深蓝黑科技风 */
+  --background: 221 35% 12%;        /* 深蓝黑 #0f172a - 更深的背景 */
+  --foreground: 210 40% 98%;        /* 亮白文字 #f8fafc */
+
+  /* 主色系 - 科技蓝 */
+  --primary: 217 91% 65%;           /* 亮科技蓝 #3b82f6 - 更亮更鲜艳 */
+  --primary-foreground: 0 0% 100%;
+
+  /* 次要色系 - 冷灰 */
+  --secondary: 215 25% 70%;         /* 亮中灰 #94a3b8 */
+  --secondary-foreground: 221 35% 12%;
+
+  /* 强调色 - 活力橙 */
+  --accent: 28 95% 58%;             /* 鲜艳橙 #fb923c - 更醒目 */
+  --accent-foreground: 0 0% 100%;
+
+  /* 卡片色 - 半透明玻璃态 */
+  --card: 217 33% 17%;              /* 深蓝灰 #1e293b */
+  --card-foreground: 210 40% 98%;
+
+  /* 弹出层 */
+  --popover: 217 33% 17%;
+  --popover-foreground: 210 40% 98%;
+
+  /* 静音色 */
+  --muted: 217 33% 20%;             /* 深灰 #334155 */
+  --muted-foreground: 215 20% 70%;  /* 中亮灰 #94a3b8 */
+
+  /* 破坏性动作 */
+  --destructive: 0 84% 65%;         /* 鲜艳红 #ef4444 */
+  --destructive-foreground: 0 0% 98%;
+
+  /* 边框 - 清晰可见 */
+  --border: 217 33% 30%;            /* 深灰边框 #475569 */
+  --input: 217 33% 30%;
+  --ring: 217 91% 65%;
+
+  /* 状态颜色 - 高对比度 */
+  --success: 142 76% 50%;           /* 亮绿 #22c55e */
+  --warning: 43 96% 56%;            /* 亮黄 #eab308 */
+  --error: 0 84% 65%;               /* 鲜艳红 #ef4444 */
+  --info: 199 89% 55%;              /* 亮蓝 #3b82f6 */
+
+  /* 工业专业色 */
+  --industrial-gray: 215 25% 70%;   /* 工业灰 #94a3b8 */
+  --industrial-orange: 28 95% 58%;  /* 安全橙 #fb923c */
+  --industrial-green: 142 76% 50%;  /* 运行绿 #22c55e */
+
+  /* 圆角 - 适中圆角 */
+  --radius: 0.5rem;
+  --success-foreground: var(--color-emerald-900);
+  --info-foreground: var(--color-violet-900);
+  --warning-foreground: var(--color-yellow-900);
+  --invert: var(--color-zinc-900);
+  --invert-foreground: var(--color-zinc-50);
+}
+
+.dark {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --destructive-foreground: var(--color-red-600);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-600);
+  --info: var(--color-violet-500);
+  --info-foreground: var(--color-violet-600);
+  --warning: var(--color-yellow-500);
+  --warning-foreground: var(--color-yellow-600);
+  --invert: var(--color-zinc-700);
+  --invert-foreground: var(--color-zinc-50);
+}
+
+/* ========== 基础样式 ========== */
+* {
+  border-color: hsl(var(--border));
+}
+
+/* 所有按钮显示小手光标 */
+button {
+  cursor: pointer;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-size: 20px; /* 基准字体从 16px 增加到 20px，所有 rem 单位自动增大 4px */
+}
+
+/* 移除默认 outline 但保留 focus-visible */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ========== 打印样式 ========== */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ========== 科技风效果类 ========== */
+
+/* 发光边框效果 */
+.glow-border-cyan {
+  border: 2px solid rgba(34, 211, 238, 0.5);
+  box-shadow: var(--glow-cyan);
+}
+
+.glow-border-blue {
+  border: 2px solid rgba(96, 165, 250, 0.5);
+  box-shadow: var(--glow-blue);
+}
+
+.glow-border-green {
+  border: 2px solid rgba(74, 222, 128, 0.5);
+  box-shadow: var(--glow-green);
+}
+
+.glow-border-orange {
+  border: 2px solid rgba(251, 146, 60, 0.5);
+  box-shadow: var(--glow-orange);
+}
+
+/* 渐变边框 */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.1), rgba(59, 130, 246, 0.1));
+  border-radius: 12px;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: 12px;
+  background: var(--gradient-cyan-blue);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* 玻璃态卡片 */
+.glass-card {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+}
+
+/* 科技网格背景 */
+.tech-grid-bg {
+  background-image: var(--tech-grid);
+  background-size: 20px 20px;
+}
+
+/* 扫描线动画 */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.scan-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--scan-line);
+  background-size: 100% 4px;
+  animation: scan 3s linear infinite;
+  pointer-events: none;
+}
+
+/* 脉冲发光动画 */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 40px rgba(59, 130, 246, 0.4);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* 霓虹文字 */
+.neon-text-cyan {
+  color: #22d3ee;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.8), 0 0 20px rgba(34, 211, 238, 0.5);
+}
+
+.neon-text-blue {
+  color: #3b82f6;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+/* 综合科技风卡片 */
+.tech-card {
+  position: relative;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  box-shadow: var(--glow-blue);
+  overflow: hidden;
+}
+
+.tech-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--tech-grid);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* 科技风按钮 */
+.tech-button {
+  background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.tech-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.tech-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.tech-button:hover::before {
+  transform: translateX(100%);
+}
+
+/* 状态指示器 */
+.status-indicator {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-indicator.active {
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e, 0 0 20px #22c55e;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.status-indicator.warning {
+  background: #eab308;
+  box-shadow: 0 0 10px #eab308, 0 0 20px #eab308;
+}
+
+.status-indicator.error {
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444;
+  animation: pulse-glow 1s ease-in-out infinite;
+}
+
+@theme inline {
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-invert: var(--invert);
+  --color-invert-foreground: var(--invert-foreground);
+}

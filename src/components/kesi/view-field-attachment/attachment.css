@@ -1,0 +1,197 @@
+.show-attachment {
+  min-height: 36px;
+}
+
+/* 照片卡片容器 */
+.photo-card-container {
+  width: 160px;
+  height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  transition: box-shadow 0.3s ease;
+}
+
+.photo-card-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 图片展示区域（85%高度） */
+.photo-card-image-wrapper {
+  width: 100%;
+  height: 85%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.photo-card-image-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+/* 信息展示区域（15%高度） */
+.photo-card-info-wrapper {
+  width: 100%;
+  height: 15%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* 文件信息容器 */
+.photo-card-file-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+}
+
+/* 文件名样式 */
+.photo-card-file-name {
+  color: #000;
+  font-size: 12px;
+  font-weight: 500;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 下载按钮样式 */
+.photo-card-download-btn {
+  color: #999;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.photo-card-download-btn:hover {
+  color: #1890ff;
+  background: #f0f0f0;
+}
+
+/* ============================================
+   照片条形展示样式
+   ============================================ */
+
+.photo-bar-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  height: 60px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+/* 左侧图片区域（20%宽度） */
+.photo-bar-image-wrapper {
+  width: 20%;
+  height: 100%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.photo-bar-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 中间文件名区域 */
+.photo-bar-name-wrapper {
+  flex: 1;
+  padding: 0 0 0 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.photo-bar-file-name {
+  max-width: 100%;
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 右侧下载按钮区域 */
+.photo-bar-download-wrapper {
+  padding: 0 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.photo-bar-download-btn {
+  color: #999;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.photo-bar-download-btn:hover {
+  color: #1890ff;
+  background: #f0f0f0;
+}
+
+/* ============================================
+   上传项图片样式（列表中的缩略图）
+   ============================================ */
+
+.upload-item-img-wrapper-thumb {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid #f0f0f0;
+}
+
+.upload-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================================
+   响应式适配
+   ============================================ */
+
+@media (max-width: 768px) {
+  .photo-card-container {
+    width: 140px;
+    height: 180px;
+  }
+
+  .photo-bar-container {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,148 @@
+.upload-item-container {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 104px;
+  height: 104px; /* 容器和图片同尺寸，保证蒙版全屏覆盖 */
+}
+
+/* 图片容器：仅负责显示图片 */
+.upload-item-img-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #eee; /* 可选，不需要可删除 */
+}
+
+/* 图片样式：等比例缩放完整显示 */
+.upload-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 全屏蒙版容器：默认隐藏，悬浮显示 */
+.upload-item-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* 整体蒙版背景（透明度可调） */
+  opacity: 0; /* 默认隐藏 */
+  transition: opacity 0.2s ease; /* 渐变过渡 */
+  pointer-events: none; /* 默认不响应鼠标事件 */
+  z-index: 1;
+}
+
+/* 悬浮时显示整个蒙版 */
+.upload-item-container:hover .upload-item-mask {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 文本容器：包裹名称和大小，避免重叠 */
+.upload-item-text-wrap {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 4px;
+  z-index: 2; /* 层级高于蒙版背景 */
+}
+
+/* 图片名称：加粗、放大 */
+.upload-item-name {
+  color: white;
+  font-size: 14px; /* 文字放大（原12px） */
+  font-weight: 700; /* 加粗 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* 文件大小：小号、灰色、不加粗 */
+.upload-item-size {
+  color: #cccccc; /* 灰色 */
+  font-size: 11px; /* 小号文字 */
+  font-weight: 400; /* 不加粗 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px; /* 和名称拉开间距 */
+  line-height: 1.2;
+}
+
+/* 操作按钮容器：在蒙版内底部居中 */
+.upload-item-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  padding: 8px 0;
+  z-index: 2; /* 层级高于蒙版背景 */
+}
+
+/* 按钮样式：圆角方形（替换原圆形） */
+.upload-item-btn {
+  width: 32px;
+  height: 24px;
+  border-radius: 6px; /* 圆角方形（数值可调，如4px/8px） */
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+/* 图标样式 + 悬浮变红 */
+.upload-item-icon {
+  font-size: 16px;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.upload-item-btn:hover .upload-item-icon {
+  color: #1890ff;
+}
+
+/* 隐藏 AntD 原生操作栏（可选） */
+.upload-item-container .ant-upload-list-item-actions {
+  display: none !important;
+}
+
+/* 图片卡片样式容器 */
+.upload-picture-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.upload-item-add-btn {
+  border: 1px dashed #d9d9d9;
+  background: #fafafa;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-item-add-btn:hover {
+  border-color: #1890ff;
+}
+
+/* 文本样式容器 */
+.upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
