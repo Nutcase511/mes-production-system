@@ -130,7 +130,8 @@ const PreparationChecklistContent: React.FC = () => {
     checkTime: new Date(),
     remark: ''
   })
-
+  // console.log('Fetched items:', items)
+  // console.log('Model:', model)
   const [toolPreparation, setToolPreparation] = useState<ToolPreparation[]>([])
   const [materialPreparation, setMaterialPreparation] = useState<MaterialPreparation[]>([])
 
@@ -1048,21 +1049,21 @@ export function PreparationChecklistPage() {
     ]
   }
 
-  const [schema, setSchema] = useState<any>(null)
+  const [queryFields, setQueryFields] = useState<string[] | undefined>(undefined)
   useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
       .then((res: any) => {
-        if (res?.schema) setSchema(res.schema)
-        else if (res?.properties) setSchema(res)
-        else setSchema(res)
+        const schema = res?.json?.schema || res?.json || res?.schema || res
+        if (schema?.properties) {
+          setQueryFields(Object.keys(schema.properties))
+        }
       })
       .catch(console.error)
   }, [])
-  const queryFields = schema?.properties ? Object.keys(schema.properties) : undefined
 
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} queryFields={queryFields} tableFilters={tableFilters}>
+      <ViewModel tableId={tableId} queryFields={queryFields} initQuery={true} tableFilters={tableFilters}>
         <PreparationChecklistContent />
       </ViewModel>
     </div>

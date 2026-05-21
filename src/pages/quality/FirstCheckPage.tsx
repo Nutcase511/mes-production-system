@@ -3,13 +3,13 @@
  * 对试生产通过的产品进行首件检验
  */
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { useModelList, useModel, useModelSave, useModelGetItems } from '@airiot/client'
+import { useModelList, useModel, useModelSave, useModelGetItems , createAPI } from '@airiot/client'
 import { toast } from 'sonner'
 import { LoadingDots } from '@/components/ui/loading-dots'
 import {
@@ -77,26 +77,12 @@ const FirstCheckContent: React.FC = () => {
   const workOrders = items as any[]
   const loading = modelLoading
 
-  // 初始化查询：从 schema 获取所有字段
+  // 初始化查询
+  const initializedRef = useRef(false)
   useEffect(() => {
-    if (model?.properties && !hasInitialized.current && !isLoading.current) {
-      hasInitialized.current = true
-      isLoading.current = true
-      const fields = Object.keys(model.properties)
-
-      const tableFilters = {
-        'productionStatus': '2'
-      }
-
-      setTimeout(() => {
-        getItems({
-          fields: fields,
-          wheres: { filter: tableFilters }
-        }).finally(() => {
-          isLoading.current = false
-        })
-      }, 0)
-
+    if (model?.properties && !initializedRef.current) {
+      initializedRef.current = true
+      isLoading.current = false // ViewModel 会自动加载数据
     }
   }, [])
 
@@ -523,10 +509,29 @@ const FirstCheckContent: React.FC = () => {
 }
 
 export function FirstCheckPage() {
+  // 设置查询过滤条件：productionStatus=2 (试产通过)
+  const tableFilters = {
+    'productionStatus': '2'
+  }
+
+  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
+
+  React.useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        const schema = res?.json?.schema || res?.json || res?.schema || res
+        if (schema?.properties) {
+          setQueryFields(Object.keys(schema.properties))
+        }
+      })
+  }, [])
+
   return (
     <ViewModel
       tableId={tableId}
-      initQuery={false}
+      initQuery={true}
+      queryFields={queryFields}
+      tableFilters={tableFilters}
     >
       <FirstCheckContent />
     </ViewModel>

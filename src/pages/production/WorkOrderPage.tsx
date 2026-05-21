@@ -1,5 +1,5 @@
 // @ts-ignore
-import { useState, useMemo, useEffect, useRef } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useModel, useModelState, useModelGetItems, useModelList } from '@airiot/client'
+import { useModel, useModelState, useModelGetItems, useModelList , createAPI } from '@airiot/client'
 
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { DataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
@@ -119,7 +119,7 @@ const WorkOrderContent: React.FC = () => {
     const enumFields = ['productType', 'preparationStatus', 'productionStatus', 'materialStatus', 'firstCheckResult', 'finalCheckResult', 'inboundStatus']
 
     // 需要显示为关联字段的列
-    const relateFields = ['pid', 'relatedProductionNoticeNo']
+    const relateFields = ['pid', 'relatedProductionNoticeNo', 'productionPlan']
 
     // 获取所有属性定义（model 本身就是 schema，properties 在 model.properties）
     const allProps = model?.properties || {}
@@ -151,7 +151,7 @@ const WorkOrderContent: React.FC = () => {
             >
               {(props) => {
                 const relateData = props.value
-                // 如果关联数据是对象，提取 notificationNumber
+                // 如果关联数据是对象，提取 notificationNumber 或 name
                 if (relateData && typeof relateData === 'object') {
                   return (
                     <span className="text-blue-200">
@@ -163,8 +163,31 @@ const WorkOrderContent: React.FC = () => {
               }}
             </TableColumn>
           )
+        } else if (fieldId === 'pid') {
+          // pid 字段显示关联对象的 planNumber
+          columns.push(
+            <TableColumn
+              key={fieldId}
+              name={fieldId}
+              title={fieldTitle}
+              width={180}
+            >
+              {(props) => {
+                const relateData = props.value
+                // 如果关联数据是对象，提取 planNumber 或 name
+                if (relateData && typeof relateData === 'object') {
+                  return (
+                    <span className="text-blue-200">
+                      {relateData.planNumber || relateData.name || '-'}
+                    </span>
+                  )
+                }
+                return <span className="text-blue-200">{relateData || '-'}</span>
+              }}
+            </TableColumn>
+          )
         } else {
-          // 其他关联字段使用默认渲染（如 pid）
+          // 其他关联字段使用默认渲染
           columns.push(
             <TableColumn
               key={fieldId}
@@ -265,11 +288,11 @@ const WorkOrderContent: React.FC = () => {
           formSchema={filterFields}
           onSubmit={onSubmit}
           classNames={{
-            form: 'flex flex-row items-end gap-4 flex-wrap w-full',
-            group: 'flex flex-row items-end gap-4 flex-1 min-w-[200px]',
-            field: 'w-full',
-            label: 'text-blue-200 whitespace-nowrap !w-[70px] !flex-none text-sm',
-            input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-full',
+            form: 'flex flex-row items-end gap-4 w-full',
+            group: '!flex !flex-row !items-end !gap-4',
+            field: '!flex !flex-row !items-center !gap-2 !w-auto',
+            label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
+            input: '!w-auto !min-w-[240px]',
             description: '',
             error: '',
             orientation: 'horizontal',
@@ -347,9 +370,21 @@ const WorkOrderContent: React.FC = () => {
 }
 
 export function WorkOrderPage() {
+  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
+
+  React.useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        const schema = res?.json?.schema || res?.json || res?.schema || res
+        if (schema?.properties) {
+          setQueryFields(Object.keys(schema.properties))
+        }
+      })
+  }, [])
+
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={false}>
+      <ViewModel tableId={tableId} initQuery={true} queryFields={queryFields}>
           <WorkOrderContent />
         </ViewModel>
     </div>

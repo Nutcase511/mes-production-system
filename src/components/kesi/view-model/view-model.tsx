@@ -40,6 +40,7 @@ const ViewModel = ({ tableId, modelName, children, initQuery, loadingComponent,
   autoQueryFields = true,
 }: ViewModelProps) => {
   const [schema, setSchema] = React.useState<any>(null)
+  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(queryFieldsProp)
   const [initialValues, setInitialValues] = React.useState<any | null>(null)
   const initialized = React.useRef(false)
 
@@ -48,16 +49,18 @@ const ViewModel = ({ tableId, modelName, children, initQuery, loadingComponent,
     if (!autoQueryFields || !tableId) return
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
       .then((res: any) => {
-        if (res?.schema) setSchema(res.schema)
-        else if (res?.properties) setSchema(res)
-        else setSchema({ properties: {} })
+        const schema = res?.json?.schema || res?.json || res?.schema || res
+        if (schema?.properties) {
+          setSchema(schema)
+          setQueryFields(Object.keys(schema.properties))
+        } else {
+          setSchema(schema || { properties: {} })
+        }
       })
       .catch(() => {
         setSchema({ properties: {} })
       })
   }, [])
-
-  const queryFields = schema?.properties ? Object.keys(schema.properties) : queryFieldsProp
 
   React.useEffect(() => {
     if (initialized.current) return

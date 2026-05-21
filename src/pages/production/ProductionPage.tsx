@@ -3,11 +3,11 @@
  * 首件检验通过后进行正式生产
  */
 
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { useModelList, useModelSave, useModelGetItems, useModel } from '@airiot/client'
+import { useModelList, useModelSave, useModelGetItems, useModel , createAPI } from '@airiot/client'
 import { toast } from 'sonner'
 import OperationGuidePreview from '@/components/OperationGuidePreview'
 import { useAuth } from '@/contexts/AuthContext'
@@ -52,25 +52,17 @@ const ProductionContent: React.FC = () => {
   const workOrders = items as any[]
   const loading = modelLoading
 
-  // 初始化查询：从 schema 获取所有字段
+  // 初始化查询
+  const initializedRef = useRef(false)
   useEffect(() => {
-    if (model?.properties && !hasInitialized.current) {
-      hasInitialized.current = true
+    if (model?.properties && !initializedRef.current) {
+      initializedRef.current = true
       const fields = Object.keys(model.properties)
-
-      // 设置查询过滤条件：productionStatus=3 (首件检验通过) 或 productionStatus=4 (生产中)
-      const tableFilters = {
-        "$or": [
-          { "productionStatus": "3" },
-          { "productionStatus": "4" }
-        ]
-      }
-
-
-      getItems({
-        fields: fields,
-        wheres: { filter: tableFilters }
-      })
+      // 注释：使用 ViewModel 的 initQuery 代替手动调用
+      // getItems({
+      //   fields: fields,
+      //   wheres: { filter: tableFilters }
+      // })
     }
   }, [model])
 
@@ -685,9 +677,29 @@ const ProductionContent: React.FC = () => {
 }
 
 export function ProductionPage() {
+  // 设置查询过滤条件：productionStatus=3 (首件检验通过) 或 productionStatus=4 (生产中)
+  const tableFilters = {
+    "$or": [
+      { "productionStatus": "3" },
+      { "productionStatus": "4" }
+    ]
+  }
+
+  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
+
+  React.useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        const schema = res?.json?.schema || res?.json || res?.schema || res
+        if (schema?.properties) {
+          setQueryFields(Object.keys(schema.properties))
+        }
+      })
+  }, [])
+
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={false}>
+      <ViewModel tableId={tableId} initQuery={true} queryFields={queryFields} tableFilters={tableFilters}>
         <ProductionContent />
       </ViewModel>
     </div>
