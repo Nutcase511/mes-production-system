@@ -4,7 +4,7 @@
  * 可更新工序记录的数量统计
  */
 
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -19,7 +19,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { useModelList, useModelSave, useModelGetItems, useModel } from '@airiot/client'
+import { useModelList, useModelSave, useModelGetItems, useModel , createAPI } from '@airiot/client'
 import { toast } from 'sonner'
 import {
   CheckCircle,
@@ -603,7 +603,9 @@ const FinalCheckContent: React.FC = () => {
                       <p>所有零件已检验完成</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <div
+                      className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    >
                       {partRecords.map((part: any, index: number) => {
                         const partId = part.partID
                         const isSelected = selectedPartId === partId
@@ -630,13 +632,20 @@ const FinalCheckContent: React.FC = () => {
                         return (
                           <div
                             key={partId || index}
-                            className={`p-3 border rounded-lg transition-colors ${bgClass} ${canInspect ? 'cursor-pointer' : 'cursor-default'}`}
+                            className="p-3 border rounded-lg transition-colors cursor-pointer"
                             onClick={() => canInspect && setSelectedPartId(partId)}
+                            style={{
+                              backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.1)' :
+                                              (isInspected ? 'rgba(34, 197, 94, 0.1)' : ''),
+                              borderColor: isSelected ? 'rgba(59, 130, 246, 0.3)' :
+                                           (isQualified ? 'rgba(34, 197, 94, 0.3)' :
+                                           (isFailed ? 'rgba(239, 68, 68, 0.3)' : 'rgba(59, 130, 246, 0.3)'))
+                            }}
                           >
-                            <div className="flex items-center justify-between">
-                              <div className="text-sm font-semibold text-cyan-300">{partId}</div>
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="text-sm font-semibold text-cyan-300 flex-1 min-w-0" title={partId}>{partId}</div>
                               {isInspected && (
-                                <Badge variant={isFirstPartQualified || isQualified ? "default" : "destructive"} className="text-xs">
+                                <Badge variant={isFirstPartQualified || isQualified ? "default" : "destructive"} className="text-xs flex-shrink-0">
                                   {isFirstPartQualified ? '首件合格' : (isQualified ? '合格' : '不合格')}
                                 </Badge>
                               )}
@@ -978,8 +987,20 @@ const FinalCheckContent: React.FC = () => {
 }
 
 export function FinalCheckPage() {
+  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
+
+  React.useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        const schema = res?.schema || res
+        if (schema?.properties) {
+          setQueryFields(Object.keys(schema.properties))
+        }
+      })
+  }, [])
+
   return (
-    <ViewModel tableId={tableId} initQuery={false}>
+    <ViewModel tableId={tableId} initQuery={false} queryFields={queryFields}>
       <FinalCheckContent />
     </ViewModel>
   )
