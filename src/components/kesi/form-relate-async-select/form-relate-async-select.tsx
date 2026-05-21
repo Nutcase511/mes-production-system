@@ -303,9 +303,10 @@ const AsyncSelect: React.FC<AsyncSelectProps> = (props) => {
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className="p-0 w-full min-w-[200px]"
+          className="p-0 w-full min-w-[200px] bg-popover text-popover-foreground"
           align="start"
           onOpenAutoFocus={(e) => e.preventDefault()}
+          style={{ backgroundColor: 'rgb(30, 41, 59)', color: 'rgb(248, 250, 252)' }}
         >
           <div className="p-2">
             {/* 搜索输入框 */}

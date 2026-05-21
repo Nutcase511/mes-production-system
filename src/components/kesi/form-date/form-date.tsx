@@ -667,6 +667,7 @@ const FormDate = React.forwardRef<HTMLDivElement, FormDateProps>(
               onMonthChange={setMonth}
               onSelect={handleDateSelect}
               disabled={disabled}
+              className="[&_.rdp-day]:h-10 [&_.rdp-day]:w-10"
             />
           )
       }
@@ -718,6 +719,7 @@ const FormDate = React.forwardRef<HTMLDivElement, FormDateProps>(
                 align="end"
                 alignOffset={-8}
                 sideOffset={10}
+                style={{ backgroundColor: 'rgb(30, 41, 59)', color: 'rgb(248, 250, 252)' }}
               >
                 <>
                   <div className="flex">

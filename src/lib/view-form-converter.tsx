@@ -37,6 +37,12 @@ const formConverter = (schema: any, formSchema: any) => {
     const type = schema.type
     const format = formSchema.format || schema.format
     const isEnum = formSchema.enum || schema.enum
+    
+    // 优先检查关联字段
+    if (schema.relate || schema.relateTo || schema.relateSchema) {
+      return FormRelateOld
+    }
+    
     if (isEnum) {
       switch (type) {
         case 'string':
