@@ -6,9 +6,9 @@ import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModel, useModelGetItems } from '@airiot/client'
 import ViewFilter from '@/components/kesi/view-filter/view-filter'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
-import Actions, { CreateAction } from '@/components/kesi/view-actions/view-actions'
+import Actions, { CreateAction, ViewAction, EditAction } from '@/components/kesi/view-actions/view-actions'
 import { LoadingDots } from '@/components/ui/loading-dots'
-import { Settings, Activity, Calendar, ArrowRight } from 'lucide-react'
+import { Settings, Activity, Calendar, ArrowRight, Eye, Edit } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const tableId = '设备台账'
@@ -116,8 +116,17 @@ const PageContent: React.FC = () => {
                       )}
                     </div>
 
-                    <div className="flex gap-2 pt-2 border-t border-blue-400/20">
-                      <Actions item={item} actions={['view', 'edit']} variant="buttons" />
+                    <div className="flex gap-1 pt-2 border-t border-blue-400/20">
+                      <ViewAction itemId={item.id}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </ViewAction>
+                      <EditAction itemId={item.id}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </EditAction>
                     </div>
                   </CardContent>
                 </Card>

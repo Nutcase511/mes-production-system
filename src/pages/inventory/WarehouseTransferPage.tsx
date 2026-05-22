@@ -7,7 +7,8 @@ import ViewModel from '@/components/kesi/view-model/view-model'
 import { ViewDataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
 import ViewFilter from '@/components/kesi/view-filter/view-filter'
-import Actions, { CreateAction } from '@/components/kesi/view-actions/view-actions'
+import Actions, { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
+import { Eye, Edit, Trash2 } from 'lucide-react'
 
 const tableId = '库存总表'
 
@@ -82,9 +83,25 @@ const WarehouseTransferContent: React.FC = () => {
             )
           }}
         </TableColumn>
-        <TableColumn name="__actions__" title="操作" fixed="right" width={130}>
+        <TableColumn name="__actions__" title="操作" fixed="right" width={100}>
           {(props) => (
-            <Actions item={props.item} actions={['view', 'edit', 'delete']} variant="buttons" />
+            <div className="flex items-center gap-1">
+            <ViewAction itemId={props.item.id}>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Eye className="h-4 w-4" />
+              </Button>
+            </ViewAction>
+            <EditAction itemId={props.item.id}>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Edit className="h-4 w-4" />
+              </Button>
+            </EditAction>
+            <DeleteAction itemId={props.item.id}>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive">
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </DeleteAction>
+          </div>
           )}
         </TableColumn>
       </ViewDataTable>
