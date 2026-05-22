@@ -58,8 +58,8 @@ type SchemaFormProps = UseFormPropsExtended & {
 
 const SchemaForm = ({ schema, formSchema, onSubmit, formId, children, showDescribe = true, isValid = true, classNames, schameConvert, onEffect, fieldRules, ...props }: SchemaFormProps) => {
   // 字段规则转换
-  const schemaFieldRules = React.useMemo(() =>
-    fieldRules ? convertToSchemaFormRules(fieldRules) : undefined,
+  const schemaFieldRules = React.useMemo(
+    () => fieldRules ? convertToSchemaFormRules(fieldRules) : undefined,
     [fieldRules]
   )
 
@@ -166,6 +166,11 @@ const SchemaForm = ({ schema, formSchema, onSubmit, formId, children, showDescri
     let merged = { ...baseSchema, ...fieldSchema }
     if (typeof field === 'object' && field.required) {
       merged = { ...merged, need: true }
+    }
+
+    // editableTable 字段占整行（双列布局）
+    if (merged.fieldType === 'editableTable' || merged.controlType === 'editable-table') {
+      merged.colSpan = 2
     }
 
     return { fieldKey, mergedSchema: merged }

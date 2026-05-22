@@ -10,7 +10,7 @@ import { Rate } from '@/components/kesi/form-rate/form-rate'
 import { FormRelate as FormRelateOld } from '@/components/kesi/form-relate/form-relate'
 import { FormSelect } from '@/components/kesi/form-select/form-select'
 import { FormSerialNumber } from '@/components/kesi/form-serial-number/form-serial-number'
-import { FormEditableTable } from '@/components/kesi/form-editable-table/form-editable-table'
+import { FormEditableTable } from '@/components/kesi/form-editable-table/form-editable-table-adapter'
 import { FormInput } from '@/components/kesi/form-input/form-input'
 import { FormTextarea } from '@/components/kesi/form-textarea/form-textarea'
 import { FormTime } from '@/components/kesi/form-time/form-time'
@@ -32,15 +32,31 @@ import { FormRelatePlusDataSelect as FormNumberMultiSelect } from '@/components/
 
 const formConverter = (schema: any, formSchema: any) => {
   const controlType = formSchema?.controlType || schema?.controlType
+  const fieldType = schema.fieldType || formSchema?.fieldType
 
   if (!controlType) {
     const type = schema.type
     const format = formSchema.format || schema.format
     const isEnum = formSchema.enum || schema.enum
     
+    // 优先检查 fieldType (AIRIOT 特殊字段类型)
+    if (fieldType === 'attachment') {
+      return schema.isMultiple || schema.maxCount > 1 ? FormUploadGroup : FormUpload
+    }
+
+    // 可编辑表格字段
+    if (fieldType === 'editableTable') {
+      return FormEditableTable
+    }
+
     // 优先检查关联字段
     if (schema.relate || schema.relateTo || schema.relateSchema) {
       return FormRelateOld
+    }
+    
+    // 检查附件类型（通过type字段，兼容旧版本）
+    if (type === 'attachment' || type === 'attachment-array' || type === 'file') {
+      return type === 'attachment' ? FormUpload : FormUploadGroup
     }
     
     if (isEnum) {
@@ -118,8 +134,12 @@ const formConverter = (schema: any, formSchema: any) => {
       case 'time':
         return FormTime
       case 'upload':
-        return FormUpload
       case 'upload-group':
+      case 'attachment':
+        return FormUpload
+      case 'upload-array':
+      case 'attachment-array':
+      case 'file':
         return FormUploadGroup
       case 'rich-text':
         return FormRichText
@@ -144,6 +164,7 @@ const formConverter = (schema: any, formSchema: any) => {
       case 'object':
         return FormObject
       default:
+        console.warn('Unknown controlType:', controlType, 'schema:', schema)
         return () => 'The form field component is defined'
     }
   }
