@@ -335,9 +335,9 @@ export const ViewAction: React.FC<ViewActionProps> = ({ itemId, children, formSc
         <DialogTrigger asChild>
           {trigger}
         </DialogTrigger>
-        <DialogContent className={layout?.dialog ? layout.dialog : "max-w-4xl"}>
-          <ViewDetail itemId={itemId} classNames={layout?.classNames} formSchema={formSchema} />
-        </DialogContent>
+ <DialogContent className={layout?.dialog ? layout.dialog : "sm:max-w-5xl"}>
+ <ViewDetail itemId={itemId} classNames={layout?.classNames} formSchema={formSchema} />
+ </DialogContent>
       </Dialog>
     </HasPermission>
   )
@@ -366,9 +366,9 @@ export const EditAction: React.FC<EditActionProps> = ({ itemId, children, formSc
         <DialogTrigger asChild>
           {trigger}
         </DialogTrigger>
-        <DialogContent className={layout?.dialog ? layout.dialog : "max-w-4xl"}>
-          <EditActionContent itemId={itemId} onClose={() => setOpen(false)} classNames={layout?.classNames} formSchema={formSchema} />
-        </DialogContent>
+ <DialogContent className={layout?.dialog ? layout.dialog : "sm:max-w-5xl"}>
+ <EditActionContent itemId={itemId} onClose={() => setOpen(false)} classNames={layout?.classNames} formSchema={formSchema} />
+ </DialogContent>
       </Dialog>
     </HasPermission>
   )
@@ -398,9 +398,9 @@ export const CreateAction: React.FC<CreateActionProps> = ({ children, formSchema
         <DialogTrigger asChild>
           {trigger}
         </DialogTrigger>
-        <DialogContent className={layout?.dialog ? layout.dialog : "max-w-4xl"}>
-          <CreateActionContent onClose={() => setOpen(false)} classNames={layout?.classNames} formSchema={formSchema} />
-        </DialogContent>
+ <DialogContent className={layout?.dialog ? layout.dialog : "sm:max-w-5xl"}>
+ <CreateActionContent onClose={() => setOpen(false)} classNames={layout?.classNames} formSchema={formSchema} />
+ </DialogContent>
       </Dialog>
     </HasPermission>
   )
