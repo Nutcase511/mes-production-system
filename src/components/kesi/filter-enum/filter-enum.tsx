@@ -62,7 +62,8 @@ const FilterEnum = (props: any) => {
           type="button"
           className={cn(
             'flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-w-37.5 bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50',
-            selectedNames.length > 0 && 'h-auto min-h-10 py-1'
+            selectedNames.length > 0 && 'h-auto min-h-10 py-1',
+            props.className
           )}
         >
           <div className="flex flex-wrap gap-1 flex-1">
@@ -98,7 +99,7 @@ const FilterEnum = (props: any) => {
           }
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-2 bg-slate-900/95 border-blue-400/30" align="start">
+      <PopoverContent style={{ minWidth: 'var(--radix-popover-trigger-width)' }} className="p-2 bg-slate-900/95 border-blue-400/30" align="start">
         <div className="space-y-1">
           {titleMap && titleMap.length > 0 ? (
             titleMap.map((item: any) => {

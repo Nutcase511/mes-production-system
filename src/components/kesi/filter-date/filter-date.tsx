@@ -82,7 +82,8 @@ const FilterDate = (props: any) => {
           variant="outline"
           className={cn(
             "w-full justify-start text-left font-normal shrink bg-blue-500/10 border-blue-400/30 text-blue-200 hover:bg-blue-500/20",
-            !dateRange && "placeholder:text-blue-300/50"
+            !dateRange && "placeholder:text-blue-300/50",
+            props.className
           )}
         >
           {dateRange ? (
@@ -93,7 +94,7 @@ const FilterDate = (props: any) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto p-0"
+        className="w-auto min-w-[560px] p-0 bg-slate-900/95 border-blue-400/30"
         align="start"
         onPointerDown={(e) => e.stopPropagation()}
         onPointerUp={(e) => e.stopPropagation()}
@@ -105,6 +106,7 @@ const FilterDate = (props: any) => {
         >
           <Calendar
             mode="range"
+            className="[&_.rdp-months]:gap-8 [&_.rdp-month]:min-w-[240px] [&_.rdp-month_caption]:text-blue-100 [&_.rdp-button_previous]:text-blue-200 [&_.rdp-button_next]:text-blue-200 [&_.rdp-weekday]:text-blue-300 [&_.rdp-day]:text-blue-100 [&_button[data-selected-single=true]]:bg-blue-500 [&_button[data-selected-single=true]]:text-white [&_button[data-range-start=true]]:bg-cyan-500 [&_button[data-range-end=true]]:bg-cyan-500 [&_button[data-range-middle=true]]:bg-cyan-500/20 [&_[data-range-middle]]:bg-cyan-500/20 [&_button[data-range-start=true]]:text-white [&_button[data-range-end=true]]:text-white [&_button:hover]:bg-blue-500/20 [&_.rdp-today]:text-cyan-400 [&_.rdp-today]:font-bold [&_.rdp-outside]:text-blue-300/40"
             selected={tempRange?.from ? { from: tempRange.from, to: tempRange.to } : (dateRange ? { from: dateRange.from, to: dateRange.to } : undefined)}
             onSelect={(range, _selectedDate, _modifiers, e) => {
               e?.stopPropagation()
@@ -113,8 +115,8 @@ const FilterDate = (props: any) => {
             }}
             numberOfMonths={2}
           />
-          <div className="flex justify-end p-3 border-t">
-            <Button size="sm" onClick={handleConfirm}>
+          <div className="flex justify-end p-3 border-t border-blue-400/30">
+            <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white" onClick={handleConfirm}>
               确定
             </Button>
           </div>

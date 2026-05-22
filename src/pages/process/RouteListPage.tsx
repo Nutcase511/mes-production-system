@@ -4,13 +4,13 @@
  * 右侧：路线详情 + 工序编辑（新增/编辑/删除/排序）
  */
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { useModelList, useModelSave, useModelGetItems, useModel } from '@airiot/client'
+import { useModelList, useModelSave, useModelGetItems, useModel , createAPI } from '@airiot/client'
 import { toast } from 'sonner'
 import ViewFilter from '@/components/kesi/view-filter/view-filter'
 import SchemaForm from '@/components/kesi/schema-form/schema-form'
@@ -717,9 +717,21 @@ const RouteListContent: React.FC = () => {
 }
 
 export function RouteListPage() {
+  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
+
+  React.useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        const schema = res?.schema || res
+        if (schema?.properties) {
+          setQueryFields(Object.keys(schema.properties))
+        }
+      })
+  }, [])
+
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={false}>
+      <ViewModel tableId={tableId} initQuery={false} queryFields={queryFields}>
         <RouteListContent />
       </ViewModel>
     </div>

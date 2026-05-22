@@ -1,9 +1,9 @@
 // @ts-ignore
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { useModel, useModelState, useModelGetItems, useModelList } from '@airiot/client'
+import { useModel, useModelState, useModelGetItems, useModelList , createAPI } from '@airiot/client'
 
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { DataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
@@ -108,13 +108,14 @@ const InventoryContent: React.FC = () => {
           formSchema={filterFields}
           onSubmit={onSubmit}
           classNames={{
-            form: 'flex flex-row items-end gap-4 flex-wrap w-full',
-            group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
-            field: 'w-auto',
-            label: 'text-blue-200 whitespace-nowrap',
-            input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
+            form: 'flex flex-row items-end gap-4 w-full',
+            group: '!flex !flex-row !items-end !gap-4',
+            field: '!flex !flex-row !items-center !gap-2 !w-auto',
+            label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
+            input: '!w-auto !min-w-[240px]',
             description: '',
             error: '',
+            orientation: 'horizontal',
           }}
         >
           {(methods) => (
@@ -200,9 +201,21 @@ const InventoryContent: React.FC = () => {
 }
 
 export function InventoryPage() {
+  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
+
+  React.useEffect(() => {
+    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
+      .then((res: any) => {
+        const schema = res?.schema || res
+        if (schema?.properties) {
+          setQueryFields(Object.keys(schema.properties))
+        }
+      })
+  }, [])
+
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={false}>
+      <ViewModel tableId={tableId} initQuery={false} queryFields={queryFields}>
         <InventoryContent />
       </ViewModel>
     </div>

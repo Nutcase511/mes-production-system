@@ -72,13 +72,14 @@ const CertificateContent: React.FC = () => {
           formSchema={filterFields}
           onSubmit={onSubmit}
           classNames={{
-            form: 'flex flex-row items-end gap-4 flex-wrap w-full',
-            group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
-            field: 'w-auto',
-            label: 'text-blue-200 whitespace-nowrap',
-            input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
+            form: 'flex flex-row items-end gap-4 w-full',
+            group: '!flex !flex-row !items-end !gap-4',
+            field: '!flex !flex-row !items-center !gap-2 !w-auto',
+            label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
+            input: '!w-auto !min-w-[240px]',
             description: '',
             error: '',
+            orientation: 'horizontal',
           }}
         >
           {(methods) => (
