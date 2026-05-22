@@ -27,24 +27,40 @@ export type FormLayoutResult = {
   dialog: string
 }
 
+// 默认水平标签 + 双列布局的 classNames
+const DEFAULT_HORIZONTAL_2COL: FormLayoutClassNames = {
+ orientation: 'horizontal',
+ group: 'grid',
+ groupStyle: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 16 },
+ field: 'flex flex-row items-center gap-2 min-w-0',
+  label: '!w-40 !flex-shrink-0 !justify-end !whitespace-nowrap',
+  input: 'flex-1 min-w-0',
+}
+
 export function formLayoutToClassNames(layout?: FormLayout | null): FormLayoutResult {
-  const defaultDialog = 'sm:max-w-4xl'
-  if (!layout) return { classNames: undefined, dialog: defaultDialog }
-  const isHorizontal = layout.labelLayout === 'horizontal'
-  const groupStyle = layout.cols > 1
-    ? { display: 'grid' as const, gridTemplateColumns: `repeat(${layout.cols}, minmax(0, 1fr))`, gap: 16 }
-    : undefined
-  const widthCfg = layout.maxWidth && layout.maxWidth !== 'full' ? MAX_WIDTH_MAP[layout.maxWidth] : undefined
-  return {
-    classNames: {
-      orientation: isHorizontal ? 'horizontal' : undefined,
-      form: widthCfg ? `mx-auto w-full ${widthCfg.form}` : undefined,
-      group: layout.cols > 1 ? 'grid' : undefined,
-      groupStyle,
-      field: isHorizontal ? 'flex flex-row items-center gap-2 min-w-0' : undefined,
-      label: isHorizontal ? '!w-20 flex-shrink-0 text-right' : undefined,
-      input: isHorizontal ? 'flex-1 min-w-0' : undefined,
-    },
-    dialog: widthCfg ? widthCfg.dialog : defaultDialog,
-  }
+ const defaultDialog = 'sm:max-w-5xl'
+ if (!layout) {
+ // 无配置时默认使用双列水平标签布局
+ return {
+ classNames: DEFAULT_HORIZONTAL_2COL,
+ dialog: defaultDialog,
+ }
+ }
+ const isHorizontal = layout.labelLayout === 'horizontal'
+ const groupStyle = layout.cols > 1
+ ? { display: 'grid' as const, gridTemplateColumns: `repeat(${layout.cols}, minmax(0, 1fr))`, gap: 16 }
+ : undefined
+ const widthCfg = layout.maxWidth && layout.maxWidth !== 'full' ? MAX_WIDTH_MAP[layout.maxWidth] : undefined
+ return {
+ classNames: {
+ orientation: isHorizontal ? 'horizontal' : undefined,
+ form: widthCfg ? `mx-auto w-full ${widthCfg.form}` : undefined,
+ group: layout.cols > 1 ? 'grid' : undefined,
+ groupStyle,
+ field: isHorizontal ? 'flex flex-row items-center gap-2 min-w-0' : undefined,
+ label: isHorizontal ? '!w-40 !flex-shrink-0 !justify-end !whitespace-nowrap' : undefined,
+ input: isHorizontal ? 'flex-1 min-w-0' : undefined,
+ },
+ dialog: widthCfg ? widthCfg.dialog : defaultDialog,
+ }
 }
