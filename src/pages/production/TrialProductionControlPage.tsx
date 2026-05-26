@@ -126,8 +126,8 @@ const TrialProductionControlContent: React.FC = () => {
       }
 
       // 往 processRecord 追加试产记录
-      const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-        ? [...selectedWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+        ? [...selectedWorkOrder.orderFollowLog]
         : []
 
       existingProcessRecord.push({
@@ -139,7 +139,7 @@ const TrialProductionControlContent: React.FC = () => {
       await saveItem({
         ...selectedWorkOrder,
         [FIELD_KEYS.PART_RECORDS]: updatedParts,
-        processRecord: existingProcessRecord,
+        orderFollowLog: existingProcessRecord,
         'productionStatus': '4', // 生产中
       })
       setTrialStarted(true)
@@ -183,8 +183,8 @@ const TrialProductionControlContent: React.FC = () => {
       }
 
       // 往 processRecord 追加试产记录
-      const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-        ? [...selectedWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+        ? [...selectedWorkOrder.orderFollowLog]
         : []
 
       const partId = existingParts[producingPartIndex].partID
@@ -197,8 +197,8 @@ const TrialProductionControlContent: React.FC = () => {
       await saveItem({
         ...selectedWorkOrder,
         [FIELD_KEYS.PART_RECORDS]: existingParts,
-        'productionStatus': '2', // 待首检
-        processRecord: existingProcessRecord,
+        'productionStatus': '2',
+        orderFollowLog: existingProcessRecord,
       })
       await getItems()
       setTrialStarted(false)

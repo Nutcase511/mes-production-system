@@ -104,8 +104,8 @@ const ProductInboundContent: React.FC = () => {
       // 由于没有库存表的结构，暂时只更新跟单状态
 
       // 往 processRecord 追加入库记录
-      const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-        ? [...selectedWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+        ? [...selectedWorkOrder.orderFollowLog]
         : []
 
       existingProcessRecord.push({
@@ -114,10 +114,9 @@ const ProductInboundContent: React.FC = () => {
         operator: '系统',
       })
 
-      // 更新跟单状态
       await saveItem({
         ...selectedWorkOrder,
-        processRecord: existingProcessRecord,
+        orderFollowLog: existingProcessRecord,
       })
 
       await getItems()

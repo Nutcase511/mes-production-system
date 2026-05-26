@@ -172,8 +172,8 @@ const FirstCheckContent: React.FC = () => {
       }
 
       // 往 processRecord 追加首检记录
-      const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-        ? [...selectedWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+        ? [...selectedWorkOrder.orderFollowLog]
         : []
 
       existingProcessRecord.push({
@@ -182,12 +182,11 @@ const FirstCheckContent: React.FC = () => {
         operator: inspectorName,
       })
 
-      // 保存首检记录和状态到生产跟单表
       await saveItem({
         ...selectedWorkOrder,
         [FIELD_KEYS.PART_RECORDS]: existingParts,
-        'productionStatus': isQualified ? '3' : '2', // 3=试产通过, 2=待首检（可重新试产）
-        processRecord: existingProcessRecord,
+        'productionStatus': isQualified ? '3' : '2',
+        orderFollowLog: existingProcessRecord,
       })
 
       // 刷新列表

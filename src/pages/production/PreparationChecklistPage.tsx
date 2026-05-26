@@ -519,8 +519,8 @@ const PreparationChecklistContent: React.FC = () => {
 
     try {
       // 构建工序记录：读取已有的 processRecord 数组，追加当前工序信息
-      const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-        ? [...selectedWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+        ? [...selectedWorkOrder.orderFollowLog]
         : []
 
       const newProcessEntry = {
@@ -534,7 +534,7 @@ const PreparationChecklistContent: React.FC = () => {
       await saveItem({
         ...selectedWorkOrder,
         'preparationStatus': '2',
-        processRecord: existingProcessRecord,
+        orderFollowLog: existingProcessRecord,
       })
 
       await getItems()

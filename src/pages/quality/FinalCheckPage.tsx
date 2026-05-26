@@ -295,8 +295,8 @@ const FinalCheckContent: React.FC = () => {
       }
 
       // 往 processRecord 追加终检记录
-      const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-        ? [...selectedWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+        ? [...selectedWorkOrder.orderFollowLog]
         : []
 
       existingProcessRecord.push({
@@ -305,11 +305,10 @@ const FinalCheckContent: React.FC = () => {
         operator: inspectorName,
       })
 
-      // 保存更新
       await saveItem({
         ...selectedWorkOrder,
         [FIELD_KEYS.PART_RECORDS]: existingParts,
-        processRecord: existingProcessRecord,
+        orderFollowLog: existingProcessRecord,
       })
       await getItems({
         wheres: { filter: tableFilters }
@@ -441,12 +440,12 @@ const FinalCheckContent: React.FC = () => {
 
   // 打开工序统计编辑对话框
   const openProcessStatsDialog = () => {
-    if (!selectedWorkOrder?.processRecord || !Array.isArray(selectedWorkOrder.processRecord)) {
+    if (!selectedWorkOrder?.orderFollowLog || !Array.isArray(selectedWorkOrder.orderFollowLog)) {
       toast.error('该跟单暂无工序记录')
       return
     }
     // 复制一份用于编辑
-    setEditingProcessStats([...selectedWorkOrder.processRecord])
+    setEditingProcessStats([...selectedWorkOrder.orderFollowLog])
     setShowProcessStatsDialog(true)
   }
 
@@ -455,7 +454,7 @@ const FinalCheckContent: React.FC = () => {
     setSavingProcessStats(true)
     try {
       // 获取完整的 processRecord，只更新数量字段
-      const updatedProcessRecord = selectedWorkOrder.processRecord.map((record: any, index: number) => ({
+      const updatedProcessRecord = selectedWorkOrder.orderFollowLog.map((record: any, index: number) => ({
         ...record,
         qualifiedQuantity: editingProcessStats[index]?.qualifiedQuantity || 0,
         outOfToleranceQuantity: editingProcessStats[index]?.outOfToleranceQuantity || 0,
@@ -464,7 +463,7 @@ const FinalCheckContent: React.FC = () => {
 
       await saveItem({
         ...selectedWorkOrder,
-        processRecord: updatedProcessRecord,
+        orderFollowLog: updatedProcessRecord,
       })
       await getItems({
         wheres: { filter: tableFilters }
@@ -485,7 +484,7 @@ const FinalCheckContent: React.FC = () => {
           <h2 className="text-2xl font-bold">终检</h2>
           <p className="text-sm text-blue-200 mt-1">对正式生产完成的零件进行终检（逐个检验）</p>
         </div>
-        {selectedWorkOrder?.processRecord && Array.isArray(selectedWorkOrder.processRecord) && selectedWorkOrder.processRecord.length > 0 && (
+        {selectedWorkOrder?.orderFollowLog && Array.isArray(selectedWorkOrder.orderFollowLog) && selectedWorkOrder.orderFollowLog.length > 0 && (
           <Button
             variant="outline"
             onClick={openProcessStatsDialog}

@@ -185,7 +185,7 @@ const ProcessListContent: React.FC = () => {
 
       await saveWorkOrder({
         ...selectedItem,
-        processRecord: processRecords,
+        orderFollowLog: processRecords,
       })
 
       await getWorkOrders()
@@ -307,9 +307,9 @@ const ProcessListContent: React.FC = () => {
                         <span className="text-white ml-2">{selectedItem.preparationStatus || '-'}</span>
                       </div>
                     </div>
-                    {selectedItem.processRecord && Array.isArray(selectedItem.processRecord) && selectedItem.processRecord.length > 0 && (
+                    {selectedItem.orderFollowLog && Array.isArray(selectedItem.orderFollowLog) && selectedItem.orderFollowLog.length > 0 && (
                       <div className="mt-2 pt-2 border-t border-blue-400/20">
-                        <span className="text-blue-300 text-sm">已设置工序：{selectedItem.processRecord.length} 道</span>
+                        <span className="text-blue-300 text-sm">已设置工序：{selectedItem.orderFollowLog.length} 道</span>
                       </div>
                     )}
                   </div>
@@ -451,14 +451,14 @@ const ProcessListContent: React.FC = () => {
             </div>
 
             {/* 已存在的工序记录警告 */}
-            {selectedItem?.processRecord && Array.isArray(selectedItem.processRecord) && selectedItem.processRecord.length > 0 && (
+            {selectedItem?.orderFollowLog && Array.isArray(selectedItem.orderFollowLog) && selectedItem.orderFollowLog.length > 0 && (
               <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-400/20">
                 <div className="flex items-center gap-2 text-yellow-300 mb-2">
                   <AlertCircle className="w-4 h-4" />
                   <span className="text-sm font-medium">注意</span>
                 </div>
                 <div className="text-xs text-yellow-200">
-                  该跟单已有 {selectedItem.processRecord.length} 道工序记录，导入后将覆盖现有记录
+                  该跟单已有 {selectedItem.orderFollowLog.length} 道工序记录，导入后将覆盖现有记录
                 </div>
               </div>
             )}

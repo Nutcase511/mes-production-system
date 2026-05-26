@@ -163,8 +163,8 @@ const ProductionContent: React.FC = () => {
         }
 
         // 往 processRecord 追加生产记录
-        const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-          ? [...selectedWorkOrder.processRecord]
+        const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+          ? [...selectedWorkOrder.orderFollowLog]
           : []
 
         existingProcessRecord.push({
@@ -176,7 +176,7 @@ const ProductionContent: React.FC = () => {
         await saveItem({
           ...selectedWorkOrder,
           [FIELD_KEYS.PART_RECORDS]: existingParts,
-          processRecord: existingProcessRecord,
+          orderFollowLog: existingProcessRecord,
           'productionStatus': '4', // 生产中
         })
 
@@ -216,8 +216,8 @@ const ProductionContent: React.FC = () => {
       }
 
       // 往 processRecord 追加生产记录
-      const existingProcessRecord = Array.isArray(selectedWorkOrder.processRecord)
-        ? [...selectedWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(selectedWorkOrder.orderFollowLog)
+        ? [...selectedWorkOrder.orderFollowLog]
         : []
 
       existingProcessRecord.push({
@@ -229,7 +229,7 @@ const ProductionContent: React.FC = () => {
       await saveItem({
         ...selectedWorkOrder,
         [FIELD_KEYS.PART_RECORDS]: [...existingParts, newPart],
-        processRecord: existingProcessRecord,
+        orderFollowLog: existingProcessRecord,
         'productionStatus': '4', // 生产中
       })
       // 不刷新列表，只更新当前工单数据
@@ -275,8 +275,8 @@ const ProductionContent: React.FC = () => {
       }
 
       // 往 processRecord 追加生产记录
-      const existingProcessRecord = Array.isArray(currentWorkOrder.processRecord)
-        ? [...currentWorkOrder.processRecord]
+      const existingProcessRecord = Array.isArray(currentWorkOrder.orderFollowLog)
+        ? [...currentWorkOrder.orderFollowLog]
         : []
 
       existingProcessRecord.push({
@@ -288,7 +288,7 @@ const ProductionContent: React.FC = () => {
       await saveItem({
         ...currentWorkOrder,
         [FIELD_KEYS.PART_RECORDS]: currentParts,
-        processRecord: existingProcessRecord,
+        orderFollowLog: existingProcessRecord,
       })
       // 生产中不刷新列表，只更新当前记录
       toast.success(`零件 ${lastPart.partID} 生产完成`)

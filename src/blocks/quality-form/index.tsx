@@ -29,16 +29,15 @@ export function QualityFormBlock({ workOrderId, workOrderData, onSubmit }: Quali
 
       // 获取工序名称：从 processRecord 数组中提取
       let process = '未知工序'
-      if (workOrderData.processRecord && Array.isArray(workOrderData.processRecord) && workOrderData.processRecord.length > 0) {
-        const names = workOrderData.processRecord
+      if (workOrderData.orderFollowLog && Array.isArray(workOrderData.orderFollowLog) && workOrderData.orderFollowLog.length > 0) {
+        const names = workOrderData.orderFollowLog
           .map((pr: any) => pr.processName)
           .filter((name: string) => name)
         if (names.length > 0) {
           process = names.join('、')
         }
 
-        // 根据 processRecord 生成检验项目
-        const checkItems: CheckItem[] = workOrderData.processRecord.map((pr: any, index: number) => ({
+        const checkItems: CheckItem[] = workOrderData.orderFollowLog.map((pr: any, index: number) => ({
           itemNo: `IT${String(index + 1).padStart(3, '0')}`,
           itemName: pr.processName || `工序${index + 1}`,
           method: '三坐标',
@@ -51,7 +50,7 @@ export function QualityFormBlock({ workOrderId, workOrderData, onSubmit }: Quali
         setItems(checkItems)
       } else if (workOrderData.processName || workOrderData.process_name) {
         process = workOrderData.processName || workOrderData.process_name
-        // 如果没有 processRecord，创建一个默认检验项目
+        // 如果没有 orderFollowLog，创建一个默认检验项目
         setItems([{
           itemNo: 'IT001',
           itemName: process,

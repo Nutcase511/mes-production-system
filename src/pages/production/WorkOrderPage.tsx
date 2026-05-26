@@ -133,7 +133,7 @@ const WorkOrderContent: React.FC = () => {
       }
 
       // 跳过不在表格中展示的字段
-      if (fieldId === 'partProductionRecords' || fieldId === 'processRecord') {
+      if (fieldId === 'partProductionRecords' || fieldId === 'orderFollowLog') {
         return
       }
 
@@ -376,7 +376,7 @@ const WorkOrderContent: React.FC = () => {
           </DialogHeader>
           <div className="py-4">
             <ProcessRecordView
-              processRecord={selectedWorkOrder?.processRecord}
+              processRecord={selectedWorkOrder?.orderFollowLog}
               showQuantityStats={true}
             />
           </div>
