@@ -395,19 +395,19 @@ function DataGridTableFillFootCell() {
   )
 }
 
-function getPinnedGroups<TData>(
-  items: Array<Column<TData> | { column: Column<TData> }>
+function getPinnedGroups<T extends { column: Column<any> } | Column<any>>(
+  items: T[]
 ): {
-  left: typeof items
-  center: typeof items
-  right: typeof items
+  left: T[]
+  center: T[]
+  right: T[]
 } {
-  const left: typeof items = []
-  const center: typeof items = []
-  const right: typeof items = []
+  const left: T[] = []
+  const center: T[] = []
+  const right: T[] = []
   for (const item of items) {
-    const column = "column" in item ? item.column : item
-    const isPinned = column.getIsPinned()
+    const col = ("column" in item ? item.column : item) as Column<any>
+    const isPinned = col.getIsPinned()
     if (isPinned === "left") left.push(item)
     else if (isPinned === "right") right.push(item)
     else center.push(item)

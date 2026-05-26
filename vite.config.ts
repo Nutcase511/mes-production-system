@@ -13,7 +13,15 @@ export default defineConfig(({ mode }) => {
           '/rest': {
             target: env.AIRIOT_API_TARGET,
             changeOrigin: true,
-            secure: false
+            secure: false,
+            // SDK 内部拼接 /rest/ + /core/... 会产生双斜杠，在这里统一修复
+            configure: (proxy) => {
+              proxy.on('proxyReq', (proxyReq) => {
+                if (proxyReq.path && proxyReq.path.includes('//')) {
+                  proxyReq.path = proxyReq.path.replace(/\/\//g, '/');
+                }
+              });
+            }
           }
         } : undefined
       },

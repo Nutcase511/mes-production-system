@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModel, useModelSave, useModelGetItems , createAPI } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { toast } from 'sonner'
 import { LoadingDots } from '@/components/ui/loading-dots'
 import {
@@ -51,7 +52,7 @@ interface FirstCheckRecord {
 }
 
 const FirstCheckContent: React.FC = () => {
-  const { items, loading: modelLoading } = useModelList({ initQuery: false })
+  const { items, loading: modelLoading } = useModelListWithOptions({ initQuery: false })
   const { model } = useModel()
   const { saveItem } = useModelSave()
   const { getItems } = useModelGetItems()
@@ -111,7 +112,8 @@ const FirstCheckContent: React.FC = () => {
   // 处理检验项更新
   const handleItemChange = (index: number, field: keyof InspectionItem, value: string) => {
     const newItems = [...inspectionItems]
-    newItems[index][field] = value
+    const targetItem = newItems[index] as any
+    targetItem[field] = value
 
     // 判断是否合格
     if (field === 'result') {

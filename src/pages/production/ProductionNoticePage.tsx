@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -7,6 +6,7 @@ import { LoadingDots } from '@/components/ui/loading-dots'
 import { Eye, Edit, Trash2 } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 import { useModel, useModelState, useModelGetItems, useModelList, createAPI } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import _ from 'lodash'
 
 // 从本地 airiot 组件导入
@@ -43,7 +43,7 @@ const filterFields = [
 // 表格内容组件（必须在 TableView 内部）
 const ProductionNoticeContent: React.FC = () => {
   const { model } = useModel()
-  const { items, loading } = useModelList({ initQuery: false })
+  const { items, loading } = useModelListWithOptions({ initQuery: false })
   const [wheres, setWheres] = useModelState('wheres')
   const { getItems } = useModelGetItems()
 
@@ -66,7 +66,7 @@ const ProductionNoticeContent: React.FC = () => {
 
   // 动态生成表格列
   const tableColumns = useMemo(() => {
-    const columns: React.ReactNode[] = []
+    const columns: React.ReactElement[] = []
 
     // 需要特殊渲染的枚举字段（显示为带颜色的 Badge）
     const enumFields = ['orderType', 'orderPriority', 'select-2ECC']
@@ -228,7 +228,7 @@ const ProductionNoticeContent: React.FC = () => {
         <FilterSchemaForm
           formId="production-notice-filter"
           schema={{ ...model, properties }}
-          formSchema={filterFields}
+          filterSchema={filterFields}
           onSubmit={onSubmit}
           classNames={{
             form: 'flex flex-row items-end gap-4 w-full',
@@ -238,8 +238,7 @@ const ProductionNoticeContent: React.FC = () => {
             input: '!w-auto !min-w-[240px]',
             description: '',
             error: '',
-            orientation: 'horizontal',
-          }}
+            }}
         >
           {(methods) => (
             <div className="flex items-center gap-2">
@@ -249,7 +248,7 @@ const ProductionNoticeContent: React.FC = () => {
               <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
                 重置
               </Button>
-              <CreateAction modelId={tableId} excludeFields={['notificationNumber']}>
+              <CreateAction>
                 <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
                   + 新建通知
                 </Button>
@@ -281,6 +280,7 @@ const ProductionNoticeContent: React.FC = () => {
               }
             }
           }}
+          gridOptions={{}}
         >
           {tableColumns}
         </DataTable>

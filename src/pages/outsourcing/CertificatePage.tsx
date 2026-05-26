@@ -70,7 +70,7 @@ const CertificateContent: React.FC = () => {
         <FilterSchemaForm
           formId="certificate-filter"
           schema={{ ...model, properties: model?.properties || {} }}
-          formSchema={filterFields}
+          filterSchema={filterFields}
           onSubmit={onSubmit}
           classNames={{
             form: 'flex flex-row items-end gap-4 w-full',
@@ -80,8 +80,7 @@ const CertificateContent: React.FC = () => {
             input: '!w-auto !min-w-[240px]',
             description: '',
             error: '',
-            orientation: 'horizontal',
-          }}
+            }}
         >
           {(methods) => (
             <div className="flex items-center gap-2">
@@ -91,7 +90,7 @@ const CertificateContent: React.FC = () => {
               <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
                 重置
               </Button>
-              <CreateAction modelId={tableId}>
+              <CreateAction>
                 <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
                   + 新建合格证
                 </Button>

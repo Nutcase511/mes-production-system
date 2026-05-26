@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import ViewModel from '@/components/kesi/view-model/view-model'
@@ -32,7 +31,7 @@ const PageContent: React.FC = () => {
             />
           </div>
           <div className="flex gap-2 items-center">
-            <CreateAction modelId={tableId}>
+            <CreateAction>
               <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                 + 新建入库
               </Button>

@@ -42,7 +42,7 @@ const PageContent: React.FC = () => {
             }}
           />
           <div className="flex gap-2 items-center shrink-0">
-            <CreateAction modelId={tableId}><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建</Button></CreateAction>
+            <CreateAction><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建</Button></CreateAction>
           </div>
         </div>
       </Card>
@@ -153,7 +153,7 @@ const PageContent: React.FC = () => {
       {!loading && (!items || items.length === 0) && (
         <Card className="backdrop-blur-xl bg-blue-500/10 border-2 border-blue-400/20 rounded-xl p-12 text-center">
           <div className="text-blue-200 text-lg mb-4">暂无设备数据</div>
-          <CreateAction modelId={tableId}>
+          <CreateAction>
             <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
               + 新建设备
             </Button>

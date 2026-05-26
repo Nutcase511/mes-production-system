@@ -38,6 +38,10 @@ const mockData: InventoryDetail[] = Array.from({ length: 30 }, (_, i) => {
     supplierName: ['华东精密工具','宝钢材料','苏州外协','深圳硬质合金','无锡不锈钢'][i%5],
     inboundDate: new Date(2026, 2, (i%28)+1).toISOString().slice(0,10),
     expiryDate: i%4===0?new Date(2027, 2, (i%28)+1).toISOString().slice(0,10):'',
+    openingBalance: Math.floor(Math.random()*200),
+    monthlyInbound: Math.floor(Math.random()*100),
+    monthlyOutbound: Math.floor(Math.random()*80),
+    agingDays: Math.floor(Math.random()*365),
     _createTime: `2026-03-${String((i%28)+1).padStart(2,'0')} 10:00:00`,
     createUser: 'admin',
   }

@@ -1,90 +1,99 @@
+import React, { Suspense } from 'react'
 import { createBrowserRouter, Navigate, Outlet, useNavigate, Link, useLocation } from 'react-router-dom'
-import { DashboardPage } from './pages/dashboard/DashboardPage'
-import { Dashboard2Page } from './pages/dashboard/Dashboard2Page'
-import { ProductionLinePage } from './pages/dashboard/ProductionLinePage'
-import { IoTPage } from './pages/dashboard/IoTPage'
-import { FactoryDataPage } from './pages/dashboard/FactoryDataPage'
-import { EquipmentStatusPage } from './pages/dashboard/EquipmentStatusPage'
-import { ProductionNoticePage } from './pages/production/ProductionNoticePage'
-import { OrderListPage } from './pages/production/OrderListPage'
-import { PreparationChecklistPage } from './pages/production/PreparationChecklistPage'
-import { TrialProductionControlPage } from './pages/production/TrialProductionControlPage'
-import { ProductionPage } from './pages/production/ProductionPage'
-import { WorkOrderPage } from './pages/production/WorkOrderPage'
-import { WorkTimePage } from './pages/production/WorkTimePage'
-import { DevelopmentPage } from './pages/production/DevelopmentPage'
-import { WorkReportPage } from './pages/production/WorkReportPage'
-import { SchedulingPage } from './pages/production/SchedulingPage'
-import { LaborStandardPage } from './pages/production/LaborStandardPage'
-import { LaborReportPage } from './pages/production/LaborReportPage'
+
+const DashboardPage = React.lazy(() => import('./pages/dashboard/DashboardPage').then(m => ({ default: m.DashboardPage })))
+const Dashboard2Page = React.lazy(() => import('./pages/dashboard/Dashboard2Page').then(m => ({ default: m.Dashboard2Page })))
+const ProductionLinePage = React.lazy(() => import('./pages/dashboard/ProductionLinePage').then(m => ({ default: m.ProductionLinePage })))
+const IoTPage = React.lazy(() => import('./pages/dashboard/IoTPage').then(m => ({ default: m.IoTPage })))
+const FactoryDataPage = React.lazy(() => import('./pages/dashboard/FactoryDataPage').then(m => ({ default: m.FactoryDataPage })))
+const EquipmentStatusPage = React.lazy(() => import('./pages/dashboard/EquipmentStatusPage').then(m => ({ default: m.EquipmentStatusPage })))
+const ProductionNoticePage = React.lazy(() => import('./pages/production/ProductionNoticePage').then(m => ({ default: m.ProductionNoticePage })))
+const OrderListPage = React.lazy(() => import('./pages/production/OrderListPage').then(m => ({ default: m.OrderListPage })))
+const PreparationChecklistPage = React.lazy(() => import('./pages/production/PreparationChecklistPage').then(m => ({ default: m.PreparationChecklistPage })))
+const TrialProductionControlPage = React.lazy(() => import('./pages/production/TrialProductionControlPage').then(m => ({ default: m.TrialProductionControlPage })))
+const ProductionPage = React.lazy(() => import('./pages/production/ProductionPage').then(m => ({ default: m.ProductionPage })))
+const WorkOrderPage = React.lazy(() => import('./pages/production/WorkOrderPage').then(m => ({ default: m.WorkOrderPage })))
+const WorkTimePage = React.lazy(() => import('./pages/production/WorkTimePage').then(m => ({ default: m.WorkTimePage })))
+const DevelopmentPage = React.lazy(() => import('./pages/production/DevelopmentPage').then(m => ({ default: m.DevelopmentPage })))
+const WorkReportPage = React.lazy(() => import('./pages/production/WorkReportPage').then(m => ({ default: m.WorkReportPage })))
+const SchedulingPage = React.lazy(() => import('./pages/production/SchedulingPage').then(m => ({ default: m.SchedulingPage })))
+const LaborStandardPage = React.lazy(() => import('./pages/production/LaborStandardPage').then(m => ({ default: m.LaborStandardPage })))
+const LaborReportPage = React.lazy(() => import('./pages/production/LaborReportPage').then(m => ({ default: m.LaborReportPage })))
+const DowngradeUsePage = React.lazy(() => import('./pages/production/DowngradeUsePage').then(m => ({ default: m.DowngradeUsePage })))
+const DispatchRulePage = React.lazy(() => import('./pages/production/DispatchRulePage').then(m => ({ default: m.DispatchRulePage })))
+const WorkTimeApprovalPage = React.lazy(() => import('./pages/production/WorkTimeApprovalPage').then(m => ({ default: m.WorkTimeApprovalPage })))
+const OrderDispatchPage = React.lazy(() => import('./pages/production/OrderDispatchPage').then(m => ({ default: m.OrderDispatchPage })))
+const DispatchDetailPage = React.lazy(() => import('./pages/production/DispatchDetailPage').then(m => ({ default: m.DispatchDetailPage })))
+const ProductionTypeDeterminationPage = React.lazy(() => import('./pages/production/ProductionTypeDeterminationPage').then(m => ({ default: m.ProductionTypeDeterminationPage })))
+const FirstCheckPage = React.lazy(() => import('./pages/quality/FirstCheckPage').then(m => ({ default: m.FirstCheckPage })))
+const FinalCheckPage = React.lazy(() => import('./pages/quality/FinalCheckPage').then(m => ({ default: m.FinalCheckPage })))
+const FinalInspectionPage = React.lazy(() => import('./pages/quality/FinalInspectionPage').then(m => ({ default: m.FinalInspectionPage })))
+const SPCPage = React.lazy(() => import('./pages/quality/SPCPage').then(m => ({ default: m.SPCPage })))
+const TracePage = React.lazy(() => import('./pages/quality/TracePage').then(m => ({ default: m.TracePage })))
+const RepairOrderPage = React.lazy(() => import('./pages/quality/RepairOrderPage').then(m => ({ default: m.RepairOrderPage })))
+const ScrapOrderPage = React.lazy(() => import('./pages/quality/ScrapOrderPage').then(m => ({ default: m.ScrapOrderPage })))
+const NonconformingReviewPage = React.lazy(() => import('./pages/quality/NonconformingReviewPage').then(m => ({ default: m.NonconformingReviewPage })))
+const TestPreparationCheckPage = React.lazy(() => import('./pages/quality/TestPreparationCheckPage').then(m => ({ default: m.TestPreparationCheckPage })))
+const TestEnvironmentRecordPage = React.lazy(() => import('./pages/quality/TestEnvironmentRecordPage').then(m => ({ default: m.TestEnvironmentRecordPage })))
+const EmergencyReleasePage = React.lazy(() => import('./pages/quality/EmergencyReleasePage').then(m => ({ default: m.EmergencyReleasePage })))
+const InspectionStampPage = React.lazy(() => import('./pages/quality/InspectionStampPage').then(m => ({ default: m.InspectionStampPage })))
+const InventoryPage = React.lazy(() => import('./pages/inventory/InventoryPage').then(m => ({ default: m.InventoryPage })))
+const MaterialRequisitionPage = React.lazy(() => import('./pages/inventory/MaterialRequisitionPage').then(m => ({ default: m.MaterialRequisitionPage })))
+const ProductInboundPage = React.lazy(() => import('./pages/inventory/ProductInboundPage').then(m => ({ default: m.ProductInboundPage })))
+const SemiFinishedInboundPage = React.lazy(() => import('./pages/inventory/SemiFinishedInboundPage').then(m => ({ default: m.SemiFinishedInboundPage })))
+const PurchaseOrderPage = React.lazy(() => import('./pages/inventory/PurchaseOrderPage').then(m => ({ default: m.PurchaseOrderPage })))
+const InventoryDetailPage = React.lazy(() => import('./pages/inventory/InventoryDetailPage').then(m => ({ default: m.InventoryDetailPage })))
+const InventoryTransactionPage = React.lazy(() => import('./pages/inventory/InventoryTransactionPage').then(m => ({ default: m.InventoryTransactionPage })))
+const InventoryLocationPage = React.lazy(() => import('./pages/inventory/InventoryLocationPage').then(m => ({ default: m.InventoryLocationPage })))
+const WarehouseTransferPage = React.lazy(() => import('./pages/inventory/WarehouseTransferPage').then(m => ({ default: m.WarehouseTransferPage })))
+const ScrapManagementPage = React.lazy(() => import('./pages/inventory/ScrapManagementPage').then(m => ({ default: m.ScrapManagementPage })))
+const WarehouseCoordinationPage = React.lazy(() => import('./pages/inventory/WarehouseCoordinationPage').then(m => ({ default: m.WarehouseCoordinationPage })))
+const InboundRecordPage = React.lazy(() => import('./pages/inventory/InboundRecordPage').then(m => ({ default: m.InboundRecordPage })))
+const MaterialReturnPage = React.lazy(() => import('./pages/inventory/MaterialReturnPage').then(m => ({ default: m.MaterialReturnPage })))
+const LoanManagementPage = React.lazy(() => import('./pages/inventory/LoanManagementPage').then(m => ({ default: m.LoanManagementPage })))
+const InventoryAlertPage = React.lazy(() => import('./pages/inventory/InventoryAlertPage').then(m => ({ default: m.InventoryAlertPage })))
+const EquipmentMonitorPage = React.lazy(() => import('./pages/equipment/EquipmentMonitorPage').then(m => ({ default: m.EquipmentMonitorPage })))
+const EquipmentDetailPage = React.lazy(() => import('./pages/equipment/EquipmentDetailPage').then(m => ({ default: m.EquipmentDetailPage })))
+const EquipmentListPage = React.lazy(() => import('./pages/equipment/EquipmentListPage').then(m => ({ default: m.EquipmentListPage })))
+const MaintenancePage = React.lazy(() => import('./pages/equipment/MaintenancePage').then(m => ({ default: m.MaintenancePage })))
+const InspectionPage = React.lazy(() => import('./pages/equipment/InspectionPage').then(m => ({ default: m.InspectionPage })))
+const GaugeInspectionPage = React.lazy(() => import('./pages/equipment/GaugeInspectionPage').then(m => ({ default: m.GaugeInspectionPage })))
+const ToolMaintenancePage = React.lazy(() => import('./pages/equipment/ToolMaintenancePage').then(m => ({ default: m.ToolMaintenancePage })))
+const ImportEquipmentPage = React.lazy(() => import('./pages/equipment/ImportEquipmentPage'))
+const RouteListPage = React.lazy(() => import('./pages/process/RouteListPage').then(m => ({ default: m.RouteListPage })))
+const RouteMatchPage = React.lazy(() => import('./pages/process/RouteMatchPage').then(m => ({ default: m.RouteMatchPage })))
+const ProcessListPage = React.lazy(() => import('./pages/process/ProcessListPage').then(m => ({ default: m.ProcessListPage })))
+const OutsourcingListPage = React.lazy(() => import('./pages/outsourcing/OutsourcingListPage').then(m => ({ default: m.OutsourcingListPage })))
+const OutsourcingPendingPage = React.lazy(() => import('./pages/outsourcing/OutsourcingPendingPage').then(m => ({ default: m.OutsourcingPendingPage })))
+const CertificatePage = React.lazy(() => import('./pages/outsourcing/CertificatePage').then(m => ({ default: m.CertificatePage })))
+const DeliveryPage = React.lazy(() => import('./pages/outsourcing/DeliveryPage').then(m => ({ default: m.DeliveryPage })))
+const QualityCheckPage = React.lazy(() => import('./pages/outsourcing/QualityCheckPage').then(m => ({ default: m.QualityCheckPage })))
+const OutsourcedDeviationPage = React.lazy(() => import('./pages/outsourcing/OutsourcedDeviationPage').then(m => ({ default: m.OutsourcedDeviationPage })))
+const OutsourcingProgressPage = React.lazy(() => import('./pages/outsourcing/OutsourcingProgressPage').then(m => ({ default: m.OutsourcingProgressPage })))
+const OrganizationPage = React.lazy(() => import('./pages/system/OrganizationPage').then(m => ({ default: m.OrganizationPage })))
+const MaterialPage = React.lazy(() => import('./pages/system/MaterialPage').then(m => ({ default: m.MaterialPage })))
+const ToolPage = React.lazy(() => import('./pages/system/ToolPage').then(m => ({ default: m.ToolPage })))
+const SupplierPage = React.lazy(() => import('./pages/system/SupplierPage').then(m => ({ default: m.SupplierPage })))
+const CustomerAssetTransferPage = React.lazy(() => import('./pages/service/CustomerAssetTransferPage').then(m => ({ default: m.CustomerAssetTransferPage })))
+const CustomerAssetLedgerPage = React.lazy(() => import('./pages/service/CustomerAssetLedgerPage').then(m => ({ default: m.CustomerAssetLedgerPage })))
+const ProductHandoverPage = React.lazy(() => import('./pages/service/ProductHandoverPage').then(m => ({ default: m.ProductHandoverPage })))
+const FieldServicePage = React.lazy(() => import('./pages/service/FieldServicePage').then(m => ({ default: m.FieldServicePage })))
+const EnergyMonitorPage = React.lazy(() => import('./pages/dashboard/EnergyMonitorPage').then(m => ({ default: m.EnergyMonitorPage })))
+const LoginPage = React.lazy(() => import('./pages/LoginPage').then(m => ({ default: m.LoginPage })))
+const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })))
+const ForbiddenPage = React.lazy(() => import('./pages/ForbiddenPage').then(m => ({ default: m.ForbiddenPage })))
+const BorderTestPage = React.lazy(() => import('./pages/test/BorderTestPage'))
+const LoadingTestPage = React.lazy(() => import('./pages/test/LoadingTestPage'))
+const KesiUiTestPage = React.lazy(() => import('./pages/test/KesiUiTestPage'))
+
 import { ProductionLayout } from './pages/production/ProductionLayout'
-import { DowngradeUsePage } from './pages/production/DowngradeUsePage'
-import { FirstCheckPage } from './pages/quality/FirstCheckPage'
-import { FinalCheckPage } from './pages/quality/FinalCheckPage'
-import { FinalInspectionPage } from './pages/quality/FinalInspectionPage'
-import { SPCPage } from './pages/quality/SPCPage'
-import { TracePage } from './pages/quality/TracePage'
-import { RepairOrderPage } from './pages/quality/RepairOrderPage'
-import { ScrapOrderPage } from './pages/quality/ScrapOrderPage'
 import { QualityLayout } from './pages/quality/QualityLayout'
-import { NonconformingReviewPage } from './pages/quality/NonconformingReviewPage'
-import { TestPreparationCheckPage } from './pages/quality/TestPreparationCheckPage'
-import { TestEnvironmentRecordPage } from './pages/quality/TestEnvironmentRecordPage'
-import { EmergencyReleasePage } from './pages/quality/EmergencyReleasePage'
-import { InspectionStampPage } from './pages/quality/InspectionStampPage'
-import { InventoryPage } from './pages/inventory/InventoryPage'
-import { MaterialRequisitionPage } from './pages/inventory/MaterialRequisitionPage'
-import { ProductInboundPage } from './pages/inventory/ProductInboundPage'
-import { SemiFinishedInboundPage } from './pages/inventory/SemiFinishedInboundPage'
-import { PurchaseOrderPage } from './pages/inventory/PurchaseOrderPage'
-import { InventoryDetailPage } from './pages/inventory/InventoryDetailPage'
-import { InventoryTransactionPage } from './pages/inventory/InventoryTransactionPage'
-import { InventoryLocationPage } from './pages/inventory/InventoryLocationPage'
-import { WarehouseTransferPage } from './pages/inventory/WarehouseTransferPage'
 import { InventoryLayout } from './pages/inventory/InventoryLayout'
-import { EquipmentMonitorPage } from './pages/equipment/EquipmentMonitorPage'
-import { EquipmentDetailPage } from './pages/equipment/EquipmentDetailPage'
-import { EquipmentListPage } from './pages/equipment/EquipmentListPage'
-import { MaintenancePage } from './pages/equipment/MaintenancePage'
-import { InspectionPage } from './pages/equipment/InspectionPage'
-import { GaugeInspectionPage } from './pages/equipment/GaugeInspectionPage'
-import { ToolMaintenancePage } from './pages/equipment/ToolMaintenancePage'
 import { EquipmentLayout } from './pages/equipment/EquipmentLayout'
-import ImportEquipmentPage from './pages/equipment/ImportEquipmentPage'
-import { RouteListPage } from './pages/process/RouteListPage'
-import { RouteMatchPage } from './pages/process/RouteMatchPage'
-import { ProcessListPage } from './pages/process/ProcessListPage'
 import { ProcessLayout } from './pages/process/ProcessLayout'
 import { OutsourcingLayout } from './pages/outsourcing/OutsourcingLayout'
-import { OutsourcingListPage } from './pages/outsourcing/OutsourcingListPage'
-import { OutsourcingPendingPage } from './pages/outsourcing/OutsourcingPendingPage'
-import { CertificatePage } from './pages/outsourcing/CertificatePage'
-import { SystemLayout } from './pages/system/SystemLayout'
-import { OrganizationPage } from './pages/system/OrganizationPage'
-import { MaterialPage } from './pages/system/MaterialPage'
-import { ToolPage } from './pages/system/ToolPage'
-import { DispatchRulePage } from './pages/production/DispatchRulePage'
-import { WorkTimeApprovalPage } from './pages/production/WorkTimeApprovalPage'
-import { ScrapManagementPage } from './pages/inventory/ScrapManagementPage'
-import { WarehouseCoordinationPage } from './pages/inventory/WarehouseCoordinationPage'
-import { InboundRecordPage } from './pages/inventory/InboundRecordPage'
-import { MaterialReturnPage } from './pages/inventory/MaterialReturnPage'
-import { LoanManagementPage } from './pages/inventory/LoanManagementPage'
-import { DeliveryPage } from './pages/outsourcing/DeliveryPage'
-import { QualityCheckPage } from './pages/outsourcing/QualityCheckPage'
-import { OutsourcedDeviationPage } from './pages/outsourcing/OutsourcedDeviationPage'
 import { ServiceLayout } from './pages/service/ServiceLayout'
-import { CustomerAssetTransferPage } from './pages/service/CustomerAssetTransferPage'
-import { CustomerAssetLedgerPage } from './pages/service/CustomerAssetLedgerPage'
-import { ProductHandoverPage } from './pages/service/ProductHandoverPage'
-import { FieldServicePage } from './pages/service/FieldServicePage'
-import { EnergyMonitorPage } from './pages/dashboard/EnergyMonitorPage'
-import { LoginPage } from './pages/LoginPage'
-import { NotFoundPage } from './pages/NotFoundPage'
-import { ForbiddenPage } from './pages/ForbiddenPage'
-import BorderTestPage from './pages/test/BorderTestPage'
-import LoadingTestPage from './pages/test/LoadingTestPage'
-import KesiUiTestPage from './pages/test/KesiUiTestPage'
+import { SystemLayout } from './pages/system/SystemLayout'
 import { useAuth } from './contexts/AuthContext'
 import { Button } from './components/ui/button'
 import { LogOut, User } from 'lucide-react'
@@ -92,8 +101,29 @@ import { ProductionFlowNav } from './components/ProductionFlowNav'
 import { getUserNavPrefixes, isAdmin } from './config/permissions'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
+const LazyLoad = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={
+    <div className="flex items-center justify-center h-64">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400" />
+    </div>
+  }>
+    {children}
+  </Suspense>
+)
+
 // 导航配置
-const navGroups = [
+interface NavItem {
+  path: string
+  title: string
+  match?: string
+}
+
+interface NavGroup {
+  label: string
+  items: NavItem[]
+}
+
+const navGroups: NavGroup[] = [
   {
     label: '看板',
     items: [
@@ -254,29 +284,29 @@ const ProtectedMainLayout = () => (
 export const router = createBrowserRouter([
   {
     path: '/login',
-    element: <LoginPage />
+    element: <LazyLoad><LoginPage /></LazyLoad>
   },
   {
     path: '/test/border',
-    element: <BorderTestPage />
+    element: <LazyLoad><BorderTestPage /></LazyLoad>
   },
   {
     path: '/test/loading',
-    element: <LoadingTestPage />
+    element: <LazyLoad><LoadingTestPage /></LazyLoad>
   },
   {
     path: '/test/kesi-ui',
-    element: <KesiUiTestPage />
+    element: <LazyLoad><KesiUiTestPage /></LazyLoad>
   },
   {
     path: '/403',
-    element: <ForbiddenPage />
+    element: <LazyLoad><ForbiddenPage /></LazyLoad>
   },
   {
     path: '/dashboard2',
     element: (
       <ProtectedRoute>
-        <Dashboard2Page />
+        <LazyLoad><Dashboard2Page /></LazyLoad>
       </ProtectedRoute>
     )
   },
@@ -284,7 +314,7 @@ export const router = createBrowserRouter([
     path: '/dashboard3',
     element: (
       <ProtectedRoute>
-        <ProductionLinePage />
+        <LazyLoad><ProductionLinePage /></LazyLoad>
       </ProtectedRoute>
     )
   },
@@ -292,7 +322,7 @@ export const router = createBrowserRouter([
     path: '/dashboard4',
     element: (
       <ProtectedRoute>
-        <IoTPage />
+        <LazyLoad><IoTPage /></LazyLoad>
       </ProtectedRoute>
     )
   },
@@ -300,7 +330,7 @@ export const router = createBrowserRouter([
     path: '/dashboard5',
     element: (
       <ProtectedRoute>
-        <FactoryDataPage />
+        <LazyLoad><FactoryDataPage /></LazyLoad>
       </ProtectedRoute>
     )
   },
@@ -308,7 +338,7 @@ export const router = createBrowserRouter([
     path: '/dashboard6',
     element: (
       <ProtectedRoute>
-        <EquipmentStatusPage />
+        <LazyLoad><EquipmentStatusPage /></LazyLoad>
       </ProtectedRoute>
     )
   },
@@ -317,28 +347,31 @@ export const router = createBrowserRouter([
     element: <ProtectedMainLayout />,
     children: [
       { index: true, element: <Navigate to="/dashboard" replace /> },
-      { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'dashboard', element: <LazyLoad><DashboardPage /></LazyLoad> },
 
       // 生产管理
       {
         path: 'production',
         element: <ProductionLayout />,
         children: [
-          { path: 'production-notice', element: <ProductionNoticePage /> },
-	          { path: 'orders', element: <OrderListPage /> },
-          { path: 'preparation-checklist', element: <PreparationChecklistPage /> },
-          { path: 'trial-production-control', element: <TrialProductionControlPage /> },
-          { path: 'production', element: <ProductionPage /> },
-          { path: 'dispatch-rule', element: <DispatchRulePage /> },
-          { path: 'work-orders', element: <WorkOrderPage /> },
-          { path: 'work-report', element: <WorkReportPage /> },
-          { path: 'scheduling', element: <SchedulingPage /> },
-          { path: 'labor-standard', element: <LaborStandardPage /> },
-          { path: 'labor-report', element: <LaborReportPage /> },
-          { path: 'worktime', element: <WorkTimePage /> },
-          { path: 'worktime-approval', element: <WorkTimeApprovalPage /> },
-          { path: 'development', element: <DevelopmentPage /> },
-          { path: 'downgrade-use', element: <DowngradeUsePage /> },
+          { path: 'production-notice', element: <LazyLoad><ProductionNoticePage /></LazyLoad> },
+          { path: 'orders', element: <LazyLoad><OrderListPage /></LazyLoad> },
+          { path: 'preparation-checklist', element: <LazyLoad><PreparationChecklistPage /></LazyLoad> },
+          { path: 'trial-production-control', element: <LazyLoad><TrialProductionControlPage /></LazyLoad> },
+          { path: 'production', element: <LazyLoad><ProductionPage /></LazyLoad> },
+          { path: 'dispatch-rule', element: <LazyLoad><DispatchRulePage /></LazyLoad> },
+          { path: 'work-orders', element: <LazyLoad><WorkOrderPage /></LazyLoad> },
+          { path: 'work-report', element: <LazyLoad><WorkReportPage /></LazyLoad> },
+          { path: 'scheduling', element: <LazyLoad><SchedulingPage /></LazyLoad> },
+          { path: 'labor-standard', element: <LazyLoad><LaborStandardPage /></LazyLoad> },
+          { path: 'labor-report', element: <LazyLoad><LaborReportPage /></LazyLoad> },
+          { path: 'worktime', element: <LazyLoad><WorkTimePage /></LazyLoad> },
+          { path: 'worktime-approval', element: <LazyLoad><WorkTimeApprovalPage /></LazyLoad> },
+          { path: 'development', element: <LazyLoad><DevelopmentPage /></LazyLoad> },
+          { path: 'downgrade-use', element: <LazyLoad><DowngradeUsePage /></LazyLoad> },
+          { path: 'order-dispatch', element: <LazyLoad><OrderDispatchPage /></LazyLoad> },
+          { path: 'dispatch-detail/:id', element: <LazyLoad><DispatchDetailPage /></LazyLoad> },
+          { path: 'production-type-determination', element: <LazyLoad><ProductionTypeDeterminationPage /></LazyLoad> },
           { index: true, element: <Navigate to="/production/orders" replace /> },
         ]
       },
@@ -348,18 +381,18 @@ export const router = createBrowserRouter([
         path: 'quality',
         element: <QualityLayout />,
         children: [
-          { path: 'first-check', element: <FirstCheckPage /> },
-          { path: 'final-check', element: <FinalCheckPage /> },
-          { path: 'final-inspection', element: <FinalInspectionPage /> },
-          { path: 'spc', element: <SPCPage /> },
-          { path: 'trace', element: <TracePage /> },
-          { path: 'repair', element: <RepairOrderPage /> },
-          { path: 'scrap', element: <ScrapOrderPage /> },
-          { path: 'nonconforming-review', element: <NonconformingReviewPage /> },
-          { path: 'test-preparation-check', element: <TestPreparationCheckPage /> },
-          { path: 'test-environment-record', element: <TestEnvironmentRecordPage /> },
-          { path: 'emergency-release', element: <EmergencyReleasePage /> },
-          { path: 'inspection-stamp', element: <InspectionStampPage /> },
+          { path: 'first-check', element: <LazyLoad><FirstCheckPage /></LazyLoad> },
+          { path: 'final-check', element: <LazyLoad><FinalCheckPage /></LazyLoad> },
+          { path: 'final-inspection', element: <LazyLoad><FinalInspectionPage /></LazyLoad> },
+          { path: 'spc', element: <LazyLoad><SPCPage /></LazyLoad> },
+          { path: 'trace', element: <LazyLoad><TracePage /></LazyLoad> },
+          { path: 'repair', element: <LazyLoad><RepairOrderPage /></LazyLoad> },
+          { path: 'scrap', element: <LazyLoad><ScrapOrderPage /></LazyLoad> },
+          { path: 'nonconforming-review', element: <LazyLoad><NonconformingReviewPage /></LazyLoad> },
+          { path: 'test-preparation-check', element: <LazyLoad><TestPreparationCheckPage /></LazyLoad> },
+          { path: 'test-environment-record', element: <LazyLoad><TestEnvironmentRecordPage /></LazyLoad> },
+          { path: 'emergency-release', element: <LazyLoad><EmergencyReleasePage /></LazyLoad> },
+          { path: 'inspection-stamp', element: <LazyLoad><InspectionStampPage /></LazyLoad> },
           { index: true, element: <Navigate to="/quality/first-check" replace /> },
         ]
       },
@@ -369,21 +402,24 @@ export const router = createBrowserRouter([
         path: 'inventory',
         element: <InventoryLayout />,
         children: [
-          { path: 'overview', element: <InventoryPage /> },
-          { path: 'requisition', element: <MaterialRequisitionPage /> },
-          { path: 'product-inbound', element: <ProductInboundPage /> },
-          { path: 'semi-finished-inbound', element: <SemiFinishedInboundPage /> },
-          { path: 'details', element: <InventoryDetailPage /> },
-          { path: 'transactions', element: <InventoryTransactionPage /> },
-          { path: 'inventory-location', element: <InventoryLocationPage /> },
-          { path: 'warehouse-transfer', element: <WarehouseTransferPage /> },
-          { path: 'scrap-management', element: <ScrapManagementPage /> },
-          { path: 'warehouse-coordination', element: <WarehouseCoordinationPage /> },
-          { path: 'materials', element: <MaterialPage /> },
-          { path: 'tools', element: <ToolPage /> },
-          { path: 'inbound-record', element: <InboundRecordPage /> },
-          { path: 'material-return', element: <MaterialReturnPage /> },
-          { path: 'loan-management', element: <LoanManagementPage /> },
+          { path: 'overview', element: <LazyLoad><InventoryPage /></LazyLoad> },
+          { path: 'requisition', element: <LazyLoad><MaterialRequisitionPage /></LazyLoad> },
+          { path: 'product-inbound', element: <LazyLoad><ProductInboundPage /></LazyLoad> },
+          { path: 'semi-finished-inbound', element: <LazyLoad><SemiFinishedInboundPage /></LazyLoad> },
+          { path: 'details', element: <LazyLoad><InventoryDetailPage /></LazyLoad> },
+          { path: 'transactions', element: <LazyLoad><InventoryTransactionPage /></LazyLoad> },
+          { path: 'inventory-location', element: <LazyLoad><InventoryLocationPage /></LazyLoad> },
+          { path: 'warehouse-transfer', element: <LazyLoad><WarehouseTransferPage /></LazyLoad> },
+          { path: 'scrap-management', element: <LazyLoad><ScrapManagementPage /></LazyLoad> },
+          { path: 'warehouse-coordination', element: <LazyLoad><WarehouseCoordinationPage /></LazyLoad> },
+          { path: 'materials', element: <LazyLoad><MaterialPage /></LazyLoad> },
+          { path: 'tools', element: <LazyLoad><ToolPage /></LazyLoad> },
+          { path: 'inbound-record', element: <LazyLoad><InboundRecordPage /></LazyLoad> },
+          { path: 'material-return', element: <LazyLoad><MaterialReturnPage /></LazyLoad> },
+          { path: 'loan-management', element: <LazyLoad><LoanManagementPage /></LazyLoad> },
+          { path: 'inventory-alert', element: <LazyLoad><InventoryAlertPage /></LazyLoad> },
+          { path: 'supplier', element: <LazyLoad><SupplierPage /></LazyLoad> },
+          { path: 'organization', element: <LazyLoad><OrganizationPage /></LazyLoad> },
           { index: true, element: <Navigate to="/inventory/overview" replace /> },
         ]
       },
@@ -393,9 +429,9 @@ export const router = createBrowserRouter([
         path: 'scheduling',
         element: <ProcessLayout />,
         children: [
-          { path: 'routes', element: <RouteListPage /> },
-          { path: 'match', element: <RouteMatchPage /> },
-          { path: 'processes', element: <ProcessListPage /> },
+          { path: 'routes', element: <LazyLoad><RouteListPage /></LazyLoad> },
+          { path: 'match', element: <LazyLoad><RouteMatchPage /></LazyLoad> },
+          { path: 'processes', element: <LazyLoad><ProcessListPage /></LazyLoad> },
           { index: true, element: <Navigate to="/scheduling/routes" replace /> },
         ]
       },
@@ -405,14 +441,14 @@ export const router = createBrowserRouter([
         path: 'equipment',
         element: <EquipmentLayout />,
         children: [
-          { path: 'monitor', element: <EquipmentMonitorPage /> },
-          { path: 'list', element: <EquipmentListPage /> },
-          { path: 'maintenance', element: <MaintenancePage /> },
-          { path: 'inspection', element: <InspectionPage /> },
-          { path: 'gauge', element: <GaugeInspectionPage /> },
-          { path: 'tool-maintenance', element: <ToolMaintenancePage /> },
-          { path: ':id', element: <EquipmentDetailPage /> },
-          { path: 'import-data', element: <ImportEquipmentPage /> },
+          { path: 'monitor', element: <LazyLoad><EquipmentMonitorPage /></LazyLoad> },
+          { path: 'list', element: <LazyLoad><EquipmentListPage /></LazyLoad> },
+          { path: 'maintenance', element: <LazyLoad><MaintenancePage /></LazyLoad> },
+          { path: 'inspection', element: <LazyLoad><InspectionPage /></LazyLoad> },
+          { path: 'gauge', element: <LazyLoad><GaugeInspectionPage /></LazyLoad> },
+          { path: 'tool-maintenance', element: <LazyLoad><ToolMaintenancePage /></LazyLoad> },
+          { path: ':id', element: <LazyLoad><EquipmentDetailPage /></LazyLoad> },
+          { path: 'import-data', element: <LazyLoad><ImportEquipmentPage /></LazyLoad> },
           { index: true, element: <Navigate to="/equipment/monitor" replace /> },
         ]
       },
@@ -422,12 +458,13 @@ export const router = createBrowserRouter([
         path: 'outsourcing',
         element: <OutsourcingLayout />,
         children: [
-          { path: 'list', element: <OutsourcingListPage /> },
-          { path: 'pending', element: <OutsourcingPendingPage /> },
-          { path: 'delivery', element: <DeliveryPage /> },
-          { path: 'quality-check', element: <QualityCheckPage /> },
-          { path: 'certificate', element: <CertificatePage /> },
-          { path: 'outsourced-deviation', element: <OutsourcedDeviationPage /> },
+          { path: 'list', element: <LazyLoad><OutsourcingListPage /></LazyLoad> },
+          { path: 'pending', element: <LazyLoad><OutsourcingPendingPage /></LazyLoad> },
+          { path: 'delivery', element: <LazyLoad><DeliveryPage /></LazyLoad> },
+          { path: 'quality-check', element: <LazyLoad><QualityCheckPage /></LazyLoad> },
+          { path: 'certificate', element: <LazyLoad><CertificatePage /></LazyLoad> },
+          { path: 'outsourced-deviation', element: <LazyLoad><OutsourcedDeviationPage /></LazyLoad> },
+          { path: 'progress', element: <LazyLoad><OutsourcingProgressPage /></LazyLoad> },
           { index: true, element: <Navigate to="/outsourcing/list" replace /> },
         ]
       },
@@ -437,10 +474,10 @@ export const router = createBrowserRouter([
         path: 'service',
         element: <ServiceLayout />,
         children: [
-          { path: 'customer-asset-transfer', element: <CustomerAssetTransferPage /> },
-          { path: 'customer-asset-ledger', element: <CustomerAssetLedgerPage /> },
-          { path: 'product-handover', element: <ProductHandoverPage /> },
-          { path: 'field-service', element: <FieldServicePage /> },
+          { path: 'customer-asset-transfer', element: <LazyLoad><CustomerAssetTransferPage /></LazyLoad> },
+          { path: 'customer-asset-ledger', element: <LazyLoad><CustomerAssetLedgerPage /></LazyLoad> },
+          { path: 'product-handover', element: <LazyLoad><ProductHandoverPage /></LazyLoad> },
+          { path: 'field-service', element: <LazyLoad><FieldServicePage /></LazyLoad> },
           { index: true, element: <Navigate to="/service/customer-asset-transfer" replace /> },
         ]
       },
@@ -467,6 +504,6 @@ export const router = createBrowserRouter([
 
   {
     path: '*',
-    element: <NotFoundPage />
+    element: <LazyLoad><NotFoundPage /></LazyLoad>
   }
 ])

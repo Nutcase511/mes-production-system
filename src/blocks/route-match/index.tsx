@@ -113,11 +113,11 @@ export function RouteMatchBlock({
             )}
             <div className="flex-1">
               <Badge
-                variant={
-                  matchResult.type === 'full' ? 'success' :
-                  matchResult.type === 'partial' ? 'warning' : 'error'
+                variant="outline"
+                className={
+                  matchResult.type === 'full' ? 'text-green-400 border-green-400/40' :
+                  matchResult.type === 'partial' ? 'text-yellow-400 border-yellow-400/40' : 'text-red-400 border-red-400/40'
                 }
-                className="mb-1"
               >
                 {matchResult.type === 'full' ? '完全匹配' :
                  matchResult.type === 'partial' ? '部分匹配' : '无匹配'}
@@ -162,7 +162,8 @@ export function RouteMatchBlock({
                     </p>
                   </div>
                   <Badge
-                    variant={route.matchScore && route.matchScore > 0.9 ? 'success' : 'warning'}
+                    variant="outline"
+                    className={route.matchScore && route.matchScore > 0.9 ? 'text-green-400 border-green-400/40' : 'text-yellow-400 border-yellow-400/40'}
                   >
                     匹配度: {route.matchScore ? `${(route.matchScore * 100).toFixed(0)}%` : '-'}
                   </Badge>

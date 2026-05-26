@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModelSave, useModelGetItems, useModel , createAPI } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { toast } from 'sonner'
 import OperationGuidePreview from '@/components/OperationGuidePreview'
 import { useAuth } from '@/contexts/AuthContext'
@@ -38,7 +39,7 @@ const countCompletedParts = (parts: any[]): number => {
 }
 
 const ProductionContent: React.FC = () => {
-  const { items, loading: modelLoading } = useModelList({ initQuery: false })
+  const { items, loading: modelLoading } = useModelListWithOptions({ initQuery: false })
   const { saveItem } = useModelSave()
   const { getItems } = useModelGetItems()
   const { model } = useModel()

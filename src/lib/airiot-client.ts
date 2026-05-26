@@ -28,8 +28,6 @@ export function initAiriotClient() {
   setConfig({
     projectId,
     language: 'zh-CN',
-    // 不设置 host，让请求走 Vite proxy
-    // proxy 在 vite.config.ts 中配置：/rest -> https://demo.airiot.link
   })
 
 }

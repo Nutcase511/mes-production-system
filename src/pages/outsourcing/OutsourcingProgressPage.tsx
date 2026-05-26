@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -9,6 +8,7 @@ import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
 import Actions, { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
 import { Eye, Edit, Trash2 } from 'lucide-react'
 import { useModel, useModelState, useModelGetItems, useModelList , createAPI } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { LoadingDots } from '@/components/ui/loading-dots'
 import FilterSchemaForm from '@/components/kesi/filter-form/filter-form'
 
@@ -33,7 +33,7 @@ const filterFields = [
 
 const OutsourcingProgressContent: React.FC = () => {
   const { model } = useModel()
-  const { items, loading } = useModelList({ initQuery: false })
+  const { items, loading } = useModelListWithOptions({ initQuery: false })
   const [wheres, setWheres] = useModelState('wheres')
   const { getItems } = useModelGetItems()
 
@@ -56,7 +56,7 @@ const OutsourcingProgressContent: React.FC = () => {
 
   // 动态生成表格列
   const tableColumns = useMemo(() => {
-    const columns: React.ReactNode[] = []
+    const columns: React.ReactElement[] = []
 
     // 需要特殊渲染的枚举字段（显示为带颜色的 Badge）
     const enumFields = ['productType', 'preparationStatus', 'productionStatus', 'materialStatus', 'firstCheckResult', 'finalCheckResult', 'inboundStatus', 'select-0362']
@@ -245,7 +245,7 @@ const OutsourcingProgressContent: React.FC = () => {
         <FilterSchemaForm
           formId="outsourcing-progress-filter"
           schema={{ ...model, properties: model?.properties || {} }}
-          formSchema={filterFields}
+          filterSchema={filterFields}
           onSubmit={onSubmit}
           classNames={{
             form: 'flex flex-row items-end gap-4 w-full',
@@ -255,8 +255,7 @@ const OutsourcingProgressContent: React.FC = () => {
             input: '!w-auto !min-w-[240px]',
             description: '',
             error: '',
-            orientation: 'horizontal',
-          }}
+            }}
         >
           {(methods) => (
             <div className="flex items-center gap-2">
@@ -266,7 +265,7 @@ const OutsourcingProgressContent: React.FC = () => {
               <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
                 重置
               </Button>
-              <CreateAction modelId={tableId}>
+              <CreateAction>
                 <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
                   + 新建外协计划
                 </Button>
@@ -297,6 +296,7 @@ const OutsourcingProgressContent: React.FC = () => {
                 }
               }
             }}
+            gridOptions={{}}
           >
             {tableColumns}
           </DataTable>

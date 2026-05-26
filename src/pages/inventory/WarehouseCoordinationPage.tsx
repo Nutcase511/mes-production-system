@@ -18,18 +18,18 @@ const PageContent = () => {
           <div className="flex-1">
             <ViewFilter 
               filters={[
-                { key: 'transfer-code', name: '调拨单号' },
-                { key: 'material-code', name: '物料编码' },
-                { key: 'from-warehouse', name: '调出仓库' },
-                { key: 'to-warehouse', name: '调入仓库' },
-                { key: 'status', name: '状态' },
+                { key: 'transfer-code'},
+                { key: 'material-code'},
+                { key: 'from-warehouse'},
+                { key: 'to-warehouse'},
+                { key: 'status'},
               ]} 
               classNames={{ form: 'flex flex-row items-end gap-4 flex-wrap w-full', group: 'flex flex-row items-end gap-4 flex-1 min-w-0', field: 'w-auto', label: 'text-blue-200 whitespace-nowrap', input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto', description: '', error: '' }} 
             />
           </div>
           <div className="flex gap-2 items-center pt-4">
             <Button variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20">刷新</Button>
-            <CreateAction modelId={tableId}><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建调拨单</Button></CreateAction>
+            <CreateAction><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建调拨单</Button></CreateAction>
           </div>
         </div>
       </Card>

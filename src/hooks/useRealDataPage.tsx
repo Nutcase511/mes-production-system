@@ -226,7 +226,7 @@ export function useRealDataPage(configKey: string, options: {
           onChange={(newValue) => updateField(fieldKey, newValue)}
           tableFields={fieldSchema.tableFields}
           relatedTablesData={relatedTablesData}
-          loadingRelatedTables={loadingRelatedTables}
+          loadingRelatedTables={Object.values(loadingRelatedTables).some(Boolean)}
           onLoadRelatedTable={loadRelatedTableData}
         />
       )

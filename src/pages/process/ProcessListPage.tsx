@@ -26,6 +26,7 @@ import {
 import { Label } from '@/components/ui/label'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModelSave, useModelGetItems, useModelGet } from '@airiot/client'
+import { useModelListWithOptions, useModelSaveWithTable, useModelGetItemsWithTable } from '@/hooks/useModelListSafe'
 import { toast } from 'sonner'
 import { LoadingDots } from '@/components/ui/loading-dots'
 import {
@@ -77,9 +78,9 @@ const ProcessListContent: React.FC = () => {
   const { getItems } = useModelGetItems()
 
   // 获取生产跟单列表
-  const { items: workOrders, loading: workOrdersLoading } = useModelList({ tableId: workOrderTableId })
-  const { saveItem: saveWorkOrder } = useModelSave({ tableId: workOrderTableId })
-  const { getItems: getWorkOrders } = useModelGetItems({ tableId: workOrderTableId })
+  const { items: workOrders, loading: workOrdersLoading } = useModelListWithOptions({ tableId: workOrderTableId })
+  const { saveItem: saveWorkOrder } = useModelSaveWithTable({ tableId: workOrderTableId })
+  const { getItems: getWorkOrders } = useModelGetItemsWithTable({ tableId: workOrderTableId })
 
   const [selectedId, setSelectedId] = useState<string>('')
   const [selectedItem, setSelectedItem] = useState<any>(null)
@@ -88,6 +89,8 @@ const ProcessListContent: React.FC = () => {
   // 工序记录设置相关状态
   const [showProcessRecordDialog, setShowProcessRecordDialog] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [selectedWorkOrderId, setSelectedWorkOrderId] = useState<string>('')
+  const [selectedWorkOrder, setSelectedWorkOrder] = useState<any>(null)
 
   const routes = items as any[]
   const loading = modelLoading

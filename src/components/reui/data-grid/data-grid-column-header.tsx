@@ -303,7 +303,7 @@ function DataGridColumnHeaderInner<TData, TValue>({
             title={`Unpin ${resolvedTitle} column`}
           >
             <PinOffIcon className="size-3.5! opacity-50!" aria-hidden="true" />
-          </Button>
+          </Button> 
         )}
       </div>
     )

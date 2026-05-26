@@ -1,6 +1,6 @@
 // 认证服务 - 使用官方 @airiot/client SDK
 import SHA1 from 'crypto-js/sha1'
-import type { LoginRequest, LoginResponse } from '@/types/api'
+import type { LoginRequest, LoginResponse, CurrentUser } from '@/types/api'
 import { setToken, removeToken, removeUser, getToken, getUserStr } from '@/lib/auth-token'
 
 /**

@@ -1,7 +1,6 @@
-import { DataGrid, DataGridContainer } from '@/components/ui/data-grid/data-grid'
-import { DataGridTable } from '@/components/ui/data-grid/data-grid-table'
-import { Pagination } from '@/components/DataTable/Pagination'
-import { StatusTag } from '@/components/StatusTag'
+import { DataGrid, DataGridContainer } from '@/components/reui/data-grid/data-grid'
+import { DataGridTable } from '@/components/reui/data-grid/data-grid-table'
+import { DataGridPagination } from '@/components/reui/data-grid/data-grid-pagination'
 import { Button } from '@/components/ui/button'
 import type { ColumnDef } from '@tanstack/react-table'
 import { LoadingDots } from '@/components/ui/loading-dots'
@@ -219,7 +218,7 @@ export function ProductionTableBlock({
         accessorKey: 'status',
         header: '状态',
         size: 100,
-        cell: ({ row }) => <StatusTag status={row.getValue('status')} />
+        cell: ({ row }) => <span className="text-xs px-2 py-1 rounded-full border border-blue-400/30 bg-blue-400/20 text-blue-100">{String(row.getValue('status'))}</span>
       }
     )
   }
@@ -327,13 +326,7 @@ export function ProductionTableBlock({
       </DataGridContainer>
 
       {pagination && (
-        <Pagination
-          current={pagination.current || 1}
-          pageSize={pagination.pageSize || 15}
-          total={pagination.total || 0}
-          onPageChange={pagination.onPageChange}
-          onPageSizeChange={pagination.onPageSizeChange}
-        />
+        <DataGridPagination />
       )}
     </DataGrid>
   )

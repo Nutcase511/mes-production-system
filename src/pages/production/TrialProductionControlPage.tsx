@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModelSave, useModelGetItems, useModel , createAPI } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { toastApi } from '@/components/ui/toast'
 import { LoadingDots } from '@/components/ui/loading-dots'
 import {
@@ -24,7 +25,7 @@ import { PartStatus, generatePartId, FIELD_KEYS } from '@/types/part-production'
 const tableId = '生产跟单'
 
 const TrialProductionControlContent: React.FC = () => {
-  const { items, loading: modelLoading } = useModelList({ initQuery: false })
+  const { items, loading: modelLoading } = useModelListWithOptions({ initQuery: false })
   const { saveItem } = useModelSave()
   const { getItems } = useModelGetItems()
   const { model } = useModel()

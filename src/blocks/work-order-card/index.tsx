@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { StatusTag } from '@/components/StatusTag'
+import { Badge } from '@/components/ui/badge'
 import { formatDateTime } from '@/lib/utils'
 import type { WorkOrder } from '@/types/production'
 
@@ -26,7 +26,7 @@ export function WorkOrderCard({ workOrder, onClick, onReport, onDetail }: WorkOr
             <h3 className="font-semibold text-lg text-white drop-shadow-md">{workOrder.woId}</h3>
             <p className="text-sm text-blue-200">{workOrder.productName}</p>
           </div>
-          <StatusTag status={workOrder.status} />
+          <Badge variant="outline" className="text-blue-100 border-blue-400/40">{workOrder.status}</Badge>
         </div>
       </CardHeader>
 

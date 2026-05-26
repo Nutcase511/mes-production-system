@@ -26,7 +26,7 @@ interface AuthContextType {
   user: CurrentUser | null
   isAuthenticated: boolean
   isLoading: boolean
-  login: (username: string, password: string, verifyCode?: string) => Promise<void>
+  login: (username: string, password: string, verifyCode?: string) => Promise<CurrentUser>
   logout: () => Promise<void>
   hasPermission: (permission: string) => boolean
 }

@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -23,9 +22,9 @@ const WorkReportContent: React.FC = () => {
           <div className="flex-1">
             <ViewFilter
               filters={[
-                { key: 'report-no', name: 'report-no' },
-                { key: 'work-order-no', name: 'work-order-no' },
-                { key: 'operator', name: 'operator' },
+                { key: 'report-no'},
+                { key: 'work-order-no'},
+                { key: 'operator'},
               ]}
               classNames={{
                 form: 'flex flex-row items-end gap-4 flex-wrap w-full',
@@ -40,7 +39,7 @@ const WorkReportContent: React.FC = () => {
           </div>
           <div className="flex gap-2 items-center pt-4">
             <Button variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20">刷新</Button>
-            <CreateAction modelId={tableId}>
+            <CreateAction>
               <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                 + 新建报工
               </Button>

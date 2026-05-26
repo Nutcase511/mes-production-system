@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { TableModel, useModelList, useModel } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { DataTable } from '@/components/DataTable'
 import { toastApi } from '@/components/ui/toast'
 import { formatDateTime } from '@/lib/utils'
@@ -37,7 +38,7 @@ const tableId = '排程计划'
 
 const PageContent: React.FC = () => {
   // 直接使用 useModelList 获取数据，不需要 TableView 包裹
-  const { items, loading: modelLoading } = useModelList({ initQuery: true })
+  const { items, loading: modelLoading } = useModelListWithOptions({ initQuery: true })
   const { model } = useModel()
 
   // 从 schema 获取 form 数组，确定字段顺序

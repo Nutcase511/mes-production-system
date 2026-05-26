@@ -104,9 +104,8 @@ export function ProcessFlowBlock({
               </div>
               {step.statusText && (
                 <Badge
-                  variant={getStepVariant(index) as any}
-                  className="mt-1"
-                  size={compact ? "sm" : "default"}
+                  variant="outline"
+                  className={cn("mt-1", compact ? "text-xs px-1.5 py-0" : "")}
                 >
                   {step.statusText}
                 </Badge>

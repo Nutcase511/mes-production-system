@@ -24,7 +24,7 @@ const PageContent: React.FC = () => {
             error: ''
           }} />
           <div className="flex gap-2 items-center shrink-0">
-            <CreateAction modelId={tableId}><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建</Button></CreateAction>
+            <CreateAction><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建</Button></CreateAction>
           </div>
         </div>
       </Card>

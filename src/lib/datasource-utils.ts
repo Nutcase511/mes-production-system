@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+dayjs.extend(duration)
 
 /**
  * 生成时间查询条件

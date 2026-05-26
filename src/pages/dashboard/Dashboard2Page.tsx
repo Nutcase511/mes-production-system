@@ -12,6 +12,7 @@ import {
 import { GaugeChart, GraphChart } from 'echarts/charts'
 import 'echarts-gl'
 import { useModelList, useModel, useModelGetItems } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { Model } from '@airiot/client'
 import ViewModel from '@/components/kesi/view-model/view-model'
 
@@ -333,7 +334,7 @@ function Dashboard2Content() {
   const navigate = useNavigate()
   const { model } = useModel()
   const { getItems } = useModelGetItems()
-  const { items: equipmentData, loading } = useModelList({ initQuery: false })
+  const { items: equipmentData, loading } = useModelListWithOptions({ initQuery: false })
 
   // 初始化查询
   const initializedRef = useRef(false)

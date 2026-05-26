@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dialog'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModelSave, useModelGetItems, useModel , createAPI } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { toast } from 'sonner'
 import {
   CheckCircle,
@@ -56,7 +57,7 @@ const countCompletedParts = (parts: any[]): number => {
 }
 
 const FinalCheckContent: React.FC = () => {
-  const { items, loading: modelLoading } = useModelList({ initQuery: false })
+  const { items, loading: modelLoading } = useModelListWithOptions({ initQuery: false })
   const { saveItem } = useModelSave()
   const { getItems } = useModelGetItems()
   const { model } = useModel()

@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModelSave, useModelGetItems, useModel , createAPI } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { toast } from 'sonner'
 import ViewFilter from '@/components/kesi/view-filter/view-filter'
 import SchemaForm from '@/components/kesi/schema-form/schema-form'
@@ -119,7 +120,7 @@ const ProcessRecordForm: React.FC<ProcessRecordFormProps> = ({
 
 const RouteListContent: React.FC = () => {
   const { model } = useModel()
-  const { items, loading: modelLoading } = useModelList({ initQuery: false })
+  const { items, loading: modelLoading } = useModelListWithOptions({ initQuery: false })
   const { saveItem } = useModelSave()
   const { getItems } = useModelGetItems()
 
@@ -495,7 +496,7 @@ const RouteListContent: React.FC = () => {
               <div className="space-y-2">
                 {routes.slice(0, 10).map((r, index) => {
                   const id = r.id || r._id || r['serial-number'] || index
-                  const name = r.name || '未命名路线'
+                  const name = r.processName || '未命名路线'
                   const product = r.productName || ''
                   return (
                     <div

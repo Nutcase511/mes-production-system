@@ -159,7 +159,7 @@ function DataGridPagination(props: DataGridPaginationProps): React.JSX.Element {
                 table.setPageSize(newPageSize)
               }}
             >
-              <SelectTrigger className="w-14" size="sm">
+              <SelectTrigger className="w-14 h-8 text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent side="top" className="min-w-18">

@@ -152,11 +152,6 @@ export async function getProductionOrders(params: PageParams & {
       withCount: true
     }
 
-      wheres,
-      queryParam,
-      schemaLoaded: !!schema,
-    })
-
     // 构建请求URL
     const isDev = import.meta.env.VITE_DEV_MODE === 'true' || import.meta.env.DEV
     const baseURL = isDev ? '' : (import.meta.env.VITE_AIRIOT_API_URL || 'https://demo.airiot.link')
@@ -473,12 +468,6 @@ export function buildProjectFromSchema(schema: TableSchema): Record<string, numb
   if (!schemaFields || typeof schemaFields !== 'object') {
     return project
   }
-
-    hasProperties: !!schemaFields.properties,
-    hasForm: !!schemaFields.form,
-    propertiesKeys: schemaFields.properties ? Object.keys(schemaFields.properties) : [],
-    formFields: schemaFields.form || []
-  })
 
   // 添加 Schema properties 中定义的所有字段
   if (schemaFields.properties && typeof schemaFields.properties === 'object') {

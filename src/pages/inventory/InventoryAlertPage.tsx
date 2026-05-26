@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -21,9 +20,9 @@ const InventoryAlertContent: React.FC = () => {
           <div className="flex-1">
             <ViewFilter
               filters={[
-                { key: 'material-code', name: 'material-code' },
-                { key: 'alert-type', name: 'alert-type' },
-                { key: 'alert-level', name: 'alert-level' },
+                { key: 'material-code'},
+                { key: 'alert-type'},
+                { key: 'alert-level'},
               ]}
               classNames={{
                 form: 'flex flex-row items-end gap-4 flex-wrap w-full',

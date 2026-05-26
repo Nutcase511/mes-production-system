@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -121,9 +120,9 @@ const OrderDispatchContent: React.FC = () => {
           <div className="flex-1">
             <ViewFilter
               filters={[
-                { key: 'dispatch-no', name: 'dispatch-no' },
-                { key: 'work-order-no', name: 'work-order-no' },
-                { key: 'dispatch-status', name: 'dispatch-status' },
+                { key: 'dispatch-no'},
+                { key: 'work-order-no'},
+                { key: 'dispatch-status'},
               ]}
               classNames={{
                 form: 'flex flex-row items-end gap-4 flex-wrap w-full',
@@ -154,7 +153,7 @@ const OrderDispatchContent: React.FC = () => {
               手动调整
             </Button>
             <Button variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20">刷新</Button>
-            <CreateAction modelId={tableId}>
+            <CreateAction>
               <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                 + 新建计划
               </Button>

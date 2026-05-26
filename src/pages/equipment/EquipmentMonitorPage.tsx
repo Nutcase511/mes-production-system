@@ -1,9 +1,9 @@
-// @ts-ignore
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { useModelList, useModel, useModelGetItems } from '@airiot/client'
+import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import ViewFilter from '@/components/kesi/view-filter/view-filter'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
 import Actions, { CreateAction, ViewAction, EditAction } from '@/components/kesi/view-actions/view-actions'
@@ -24,7 +24,7 @@ const getStatusColor = (status: string) => {
 }
 
 const PageContent: React.FC = () => {
-  const { items, loading } = useModelList({ initQuery: false })
+  const { items, loading } = useModelListWithOptions({ initQuery: false })
   const { model } = useModel()
   const { getItems } = useModelGetItems()
 
@@ -45,7 +45,7 @@ const PageContent: React.FC = () => {
             }}
           />
           <div className="flex gap-2 items-center shrink-0">
-            <CreateAction modelId={tableId}><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建</Button></CreateAction>
+            <CreateAction><Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">+ 新建</Button></CreateAction>
           </div>
         </div>
       </Card>
@@ -145,7 +145,7 @@ const PageContent: React.FC = () => {
       {!loading && (!items || items.length === 0) && (
         <Card className="backdrop-blur-xl bg-blue-500/10 border-2 border-blue-400/20 rounded-xl p-12 text-center">
           <div className="text-blue-200 text-lg mb-4">暂无设备数据</div>
-          <CreateAction modelId={tableId}>
+          <CreateAction>
             <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
               + 新建设备
             </Button>

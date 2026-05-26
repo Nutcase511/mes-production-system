@@ -178,7 +178,7 @@ export function SPCChartBlock({
           <div className="text-xs text-gray-500">超差点</div>
         </div>
         <div>
-          <Badge variant={withinLimits ? 'success' : 'error'}>
+          <Badge variant="outline" className={withinLimits ? 'text-green-400 border-green-400/40' : 'text-red-400 border-red-400/40'}>
             {withinLimits ? '受控' : '失控'}
           </Badge>
           <div className="text-xs text-gray-500 mt-1">状态</div>

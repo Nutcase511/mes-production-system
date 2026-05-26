@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -23,9 +22,9 @@ const InventoryTransactionContent: React.FC = () => {
           <div className="flex-1">
             <ViewFilter
               filters={[
-                { key: 'transaction-no', name: 'transaction-no' },
-                { key: 'material-code', name: 'material-code' },
-                { key: 'transaction-type', name: 'transaction-type' },
+                { key: 'transaction-no'},
+                { key: 'material-code'},
+                { key: 'transaction-type'},
               ]}
               classNames={{
                 form: 'flex flex-row items-end gap-4 flex-wrap w-full',
