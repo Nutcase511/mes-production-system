@@ -32,43 +32,46 @@ const ViewFilter: React.FC<ViewFilterProps> = ({
   }
 
   const onReset = (reset: () => void) => {
-    // 重置表单
     reset()
-    // 重置查询条件
     setWheres((w: any) => {
       return { ...w, filter: {} }
     });
     getItems()
   }
 
+  const defaultClassNames = {
+    form: 'flex flex-row items-end gap-4 flex-wrap w-full',
+    group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
+    field: 'w-auto',
+    label: 'text-blue-200 whitespace-nowrap',
+    input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
+    description: '',
+    error: ''
+  }
+
   return (
-    <FilterForm
-      formId={model?.key + 'view-filter'}
-      schema={schema ? schema : model}
-      filterSchema={filterSchema}
-      classNames={classNames ? classNames : {
-        form: '',
-        group: 'grid grid-cols-3 gap-4',
-        field: 'flex flex-row items-center gap-2 min-w-0',
-        label: '!w-20 flex-shrink-0 text-right',
-        input: 'flex-1 min-w-0',
-        description: '',
-        error: ''
-      }}
-      onSubmit={onSubmit}>
-      {(methods) => (
-        <div className="mt-4 flex justify-center gap-3">
-          <Button type="submit">
-            <Search />
-            搜索
-          </Button>
-          <Button type="button" variant="outline" onClick={() => onReset(methods.reset)}>
-            <RotateCcw />
-            重置
-          </Button>
-        </div>
-      )}
-    </FilterForm>
+    <div className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden p-4 mb-4"
+      style={{ borderColor: 'rgba(59, 130, 246, 0.3)' }}>
+      <FilterForm
+        formId={model?.key + 'view-filter'}
+        schema={schema ? schema : model}
+        filterSchema={filterSchema}
+        classNames={classNames || defaultClassNames}
+        onSubmit={onSubmit}>
+        {(methods) => (
+          <div className="flex items-center gap-2">
+            <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 h-9 text-sm">
+              <Search className="h-4 w-4 mr-1" />
+              搜索
+            </Button>
+            <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
+              <RotateCcw className="h-4 w-4 mr-1" />
+              重置
+            </Button>
+          </div>
+        )}
+      </FilterForm>
+    </div>
   )
 }
 

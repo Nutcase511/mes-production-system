@@ -140,7 +140,7 @@ export async function getEquipmentStatus(equipmentId: string): Promise<{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': `Bearer ${token}`,
         'x-request-project': projectId,
         'X-Request-TimeZone': getTimezoneOffset(),
       },
@@ -201,7 +201,7 @@ export async function getEquipmentStats(): Promise<{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': `Bearer ${token}`,
         'x-request-project': projectId,
         'X-Request-TimeZone': getTimezoneOffset(),
       },

@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { DataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
+import { ViewDataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
 import Actions, { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
 import { Eye, Edit, Trash2 } from 'lucide-react'
-import { useModel, useModelState, useModelGetItems, useModelList , createAPI } from '@airiot/client'
+import { useModel, useModelGetItems, createAPI } from '@airiot/client'
 import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { LoadingDots } from '@/components/ui/loading-dots'
-import FilterSchemaForm from '@/components/kesi/filter-form/filter-form'
+import { ViewFilter } from '@/components/kesi/view-filter/view-filter'
 
 const tableId = '生产计划'
 
@@ -34,7 +33,6 @@ const filterFields = [
 const OutsourcingProgressContent: React.FC = () => {
   const { model } = useModel()
   const { items, loading } = useModelListWithOptions({ initQuery: false })
-  const [wheres, setWheres] = useModelState('wheres')
   const { getItems } = useModelGetItems()
 
   // 从 model.form 获取字段顺序
@@ -209,77 +207,27 @@ const OutsourcingProgressContent: React.FC = () => {
     }
   }, [])
 
-  const onSubmit = (value: any) => {
-    const newWheres = { ...(wheres || {}), filter: { ...(wheres?.filter || {}), ...value } }
-    setWheres(newWheres)
-    const query = {
-      filters: [
-        {
-          field: 'select-0362',
-          operator: 'eq',
-          value: '1'
-        }
-      ]
-    }
-    getItems(query)
-  }
-
-  const onReset = (reset: () => void) => {
-    reset()
-    setWheres({ ...(wheres || {}), filter: {} })
-    const query = {
-      filters: [
-        {
-          field: 'select-0362',
-          operator: 'eq',
-          value: '1'
-        }
-      ]
-    }
-    getItems(query)
-  }
-
   return (
     <>
-      <Card className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden p-4 mb-4" style={{ borderColor: 'rgba(59, 130, 246, 0.3)' }}>
-        <FilterSchemaForm
-          formId="outsourcing-progress-filter"
-          schema={{ ...model, properties: model?.properties || {} }}
-          filterSchema={filterFields}
-          onSubmit={onSubmit}
-          classNames={{
-            form: 'flex flex-row items-end gap-4 w-full',
-            group: '!flex !flex-row !items-end !gap-4',
-            field: '!flex !flex-row !items-center !gap-2 !w-auto',
-            label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
-            input: '!w-auto !min-w-[240px]',
-            description: '',
-            error: '',
-            }}
-        >
-          {(methods) => (
-            <div className="flex items-center gap-2">
-              <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 h-9 text-sm">
-                搜索
-              </Button>
-              <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
-                重置
-              </Button>
-              <CreateAction>
-                <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
-                  + 新建外协计划
-                </Button>
-              </CreateAction>
-            </div>
-          )}
-        </FilterSchemaForm>
-      </Card>
+            {/* 过滤器 */}
+      <ViewFilter
+        filters={filterFields}
+        classNames={{
+          form: 'flex flex-row items-end gap-4 flex-wrap w-full',
+          group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
+          field: 'w-auto',
+          label: 'text-blue-200 whitespace-nowrap',
+          input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
+          description: '',
+          error: ''
+        }}
+      />
 
       {loading ? (
         <LoadingDots text="加载中..." />
       ) : (
         <>
-          <DataTable
+          <ViewDataTable
             data={items as any[]}
             tableLayout={{
               border: true,
@@ -299,7 +247,7 @@ const OutsourcingProgressContent: React.FC = () => {
             gridOptions={{}}
           >
             {tableColumns}
-          </DataTable>
+          </ViewDataTable>
 
           <div className="p-4"><ViewPagination showTotal={true} showSizeChanger={true} showQuickJumper={true} pageSizeOptions={[10, 20, 50, 100]} /></div>
         </>

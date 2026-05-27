@@ -194,7 +194,7 @@ export async function getOrderDispatchSchema(): Promise<TableSchema> {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     }
-    if (token) headers['Authorization'] = token
+    if (token) headers['Authorization'] = `Bearer ${token}`
     if (projectId) headers['x-request-project'] = projectId
 
     const response = await fetch(url, { method: 'GET', headers })

@@ -11,7 +11,7 @@ import {
 } from 'echarts/components'
 import { GaugeChart, GraphChart } from 'echarts/charts'
 import 'echarts-gl'
-import { useModelList, useModel, useModelGetItems } from '@airiot/client'
+import { useModelList, useModel } from '@airiot/client'
 import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { Model } from '@airiot/client'
 import ViewModel from '@/components/kesi/view-model/view-model'
@@ -336,19 +336,7 @@ function Dashboard2Content() {
   const { getItems } = useModelGetItems()
   const { items: equipmentData, loading } = useModelListWithOptions({ initQuery: false })
 
-  // 初始化查询
-  const initializedRef = useRef(false)
-  useEffect(() => {
-    if (model?.properties && !initializedRef.current) {
-      initializedRef.current = true
-      const fields = Object.keys(model.properties)
-      const query = {
-        fields: fields,
-        withCount: true
-      }
-      getItems(query)
-    }
-  }, [model])
+
 
   const [currentTime, setCurrentTime] = useState(new Date())
   const [announcements] = useState([

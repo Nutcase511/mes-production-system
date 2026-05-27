@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useModelPagination, useModelPageSize, useModelCount } from '@airiot/client'
+import { useModelPagination, useModelPageSize, useModelCount, useModelList } from '@airiot/client'
 
 interface ViewPaginationProps {
   showSizeChanger?: boolean
@@ -32,16 +32,32 @@ const ViewPagination: React.FC<ViewPaginationProps> = ({
   className = '',
   disabled = false
 }) => {
-  const { items, activePage, changePage } = useModelPagination()
+  const { items: pageItems, activePage, changePage } = useModelPagination()
   const { sizes, setPageSize, size } = useModelPageSize()
-  const { count } = useModelCount()
+  const { count: apiCount } = useModelCount()
+  const { items: listItems } = useModelList()
 
-  const totalPages = count > 0 ? Math.ceil(count / size) : Math.ceil(items) || 1
+  // 优先使用 API 返回的 count（需要后端 withCount 支持）
+  // 否则用当前页数据条数兜底
+  const totalCount = apiCount > 0 ? apiCount : listItems?.length || 0
+  const totalPages = totalCount > 0 ? Math.ceil(totalCount / size) : (pageItems || 1)
 
-  // 不显示分页的情况
-  if (totalPages <= 1) {
+  // 判断当前页是否是"满页"（说明可能有下一页）
+  const currentItemCount = listItems?.length || 0
+  const hasMorePages = currentItemCount >= size
+
+  // 无数据时不显示
+  if (totalCount === 0 && currentItemCount === 0) {
     return null
   }
+
+  // 只有一页且不满一页时，不需要分页
+  if (totalPages <= 1 && !hasMorePages) {
+    return null
+  }
+
+  // 即使 totalPages=1，如果当前页满了说明可能有更多数据，仍然显示分页
+  const effectiveTotalPages = hasMorePages && totalPages <= 1 ? activePage + 1 : totalPages
 
   const handlePageChange = (page: number) => {
     if (!disabled) {
@@ -60,27 +76,24 @@ const ViewPagination: React.FC<ViewPaginationProps> = ({
     const maxButtons = 7
     const pages: (number | 'ellipsis')[] = []
 
-    if (totalPages <= maxButtons) {
-      for (let i = 1; i <= totalPages; i++) {
+    if (effectiveTotalPages <= maxButtons) {
+      for (let i = 1; i <= effectiveTotalPages; i++) {
         pages.push(i)
       }
     } else {
       if (activePage <= Math.ceil(maxButtons / 2)) {
-        // 靠近开始
         for (let i = 1; i <= maxButtons - 2; i++) {
           pages.push(i)
         }
         pages.push('ellipsis')
-        pages.push(totalPages)
-      } else if (activePage >= totalPages - Math.floor(maxButtons / 2)) {
-        // 靠近结束
+        pages.push(effectiveTotalPages)
+      } else if (activePage >= effectiveTotalPages - Math.floor(maxButtons / 2)) {
         pages.push(1)
         pages.push('ellipsis')
-        for (let i = totalPages - (maxButtons - 2); i <= totalPages; i++) {
+        for (let i = effectiveTotalPages - (maxButtons - 2); i <= effectiveTotalPages; i++) {
           pages.push(i)
         }
       } else {
-        // 在中间
         pages.push(1)
         pages.push('ellipsis')
         const start = activePage - Math.floor((maxButtons - 4) / 2)
@@ -88,7 +101,7 @@ const ViewPagination: React.FC<ViewPaginationProps> = ({
           pages.push(i)
         }
         pages.push('ellipsis')
-        pages.push(totalPages)
+        pages.push(effectiveTotalPages)
       }
     }
 
@@ -99,8 +112,8 @@ const ViewPagination: React.FC<ViewPaginationProps> = ({
     <div className={`flex items-center justify-between gap-4 ${className}`}>
       {/* 显示总数 */}
       {showTotal && (
-        <div className="text-sm text-slate-600">
-          共 {count} 条
+        <div className="text-sm text-blue-300/70">
+          共 {totalCount > 0 ? totalCount : `${currentItemCount}+`} 条
         </div>
       )}
 
@@ -131,7 +144,8 @@ const ViewPagination: React.FC<ViewPaginationProps> = ({
                   <PaginationLink
                     isActive={page === activePage}
                     onClick={() => handlePageChange(page as number)}
-                    className="cursor-pointer" size={undefined}                  >
+                    className="cursor-pointer" size={undefined}
+                  >
                     {page}
                   </PaginationLink>
                 </PaginationItem>
@@ -142,9 +156,9 @@ const ViewPagination: React.FC<ViewPaginationProps> = ({
             <PaginationLink
               aria-label="Go to next page"
               size="default"
-              onClick={() => activePage < totalPages && handlePageChange(activePage + 1)}
-              aria-disabled={disabled || activePage === totalPages}
-              className={`gap-1 pr-2.5 ${disabled || activePage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}
+              onClick={() => activePage < effectiveTotalPages && handlePageChange(activePage + 1)}
+              aria-disabled={disabled || activePage === effectiveTotalPages}
+              className={`gap-1 pr-2.5 ${disabled || activePage === effectiveTotalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}
             >
               <span>下一页</span>
               <ChevronRight className="h-4 w-4" />
@@ -177,25 +191,25 @@ const ViewPagination: React.FC<ViewPaginationProps> = ({
       )}
 
       {/* 快速跳转 */}
-      {showQuickJumper && totalPages > 5 && (
+      {showQuickJumper && effectiveTotalPages > 5 && (
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-slate-600">跳至</span>
+          <span className="text-blue-300/70">跳至</span>
           <input
             type="number"
             min={1}
-            max={totalPages}
-            className="w-16 px-2 py-1 border border-slate-300 rounded-md text-center disabled:opacity-50"
+            max={effectiveTotalPages}
+            className="w-16 px-2 py-1 border border-blue-400/30 rounded-md text-center bg-blue-500/10 text-white disabled:opacity-50"
             disabled={disabled}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 const page = parseInt(e.currentTarget.value)
-                if (page >= 1 && page <= totalPages) {
+                if (page >= 1 && page <= effectiveTotalPages) {
                   handlePageChange(page)
                 }
               }
             }}
           />
-          <span className="text-slate-600">页</span>
+          <span className="text-blue-300/70">页</span>
         </div>
       )}
     </div>

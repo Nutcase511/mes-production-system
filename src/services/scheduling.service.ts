@@ -44,7 +44,7 @@ const getHeaders = () => {
     'X-Request-TimeZone': getTimezoneOffset(),
   }
 
-  if (token) headers['Authorization'] = token
+  if (token) headers['Authorization'] = `Bearer ${token}`
   if (projectId) headers['x-request-project'] = projectId
 
   return headers

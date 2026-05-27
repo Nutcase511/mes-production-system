@@ -207,7 +207,17 @@ const DevelopmentContent = () => {
       <Card className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden" style={{ borderColor: 'rgba(59, 130, 246, 0.3)' }}>
         <CardContent className="px-4 pb-4 pt-4">
           <div className="flex items-center gap-3">
-            <ViewFilter />
+            <ViewFilter
+              classNames={{
+                form: 'flex flex-row items-end gap-4 flex-wrap w-full',
+                group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
+                field: 'w-auto',
+                label: 'text-blue-200 whitespace-nowrap',
+                input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
+                description: '',
+                error: ''
+              }}
+            />
             <Button
               onClick={() => setIsCreateOpen(true)}
               className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-lg hover:shadow-blue-500/30"
@@ -221,7 +231,7 @@ const DevelopmentContent = () => {
 
       {/* 研制订单表格 - 使用 ViewDataTable */}
       <Card className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden p-0" style={{ borderColor: 'rgba(59, 130, 246, 0.3)' }}>
-        <ViewDataTable tableLayout={{ border: true, headerSticky: true }}>
+        <ViewDataTable tableLayout={{ border: true, headerSticky: true, columnsResizable: true, stripped: true, dense: false }}>
           <TableColumn name="orderId" title="订单号" />
           <TableColumn name="productName" title="产品名称" />
           <TableColumn name="productType" title="产品类型" />
@@ -267,7 +277,7 @@ const DevelopmentContent = () => {
             }}
           </TableColumn>
         </ViewDataTable>
-        <ViewPagination />
+        <div className="p-4"><ViewPagination /></div>
       </Card>
 
       {/* 新建研制订单弹窗 */}

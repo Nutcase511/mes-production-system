@@ -414,7 +414,7 @@ export async function getSPCData(params: {
 
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': token,
+      'Authorization': `Bearer ${token}`,
       'x-request-project': projectId,
       'X-Request-TimeZone': getTimezoneOffset(),
     }

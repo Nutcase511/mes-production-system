@@ -29,14 +29,14 @@ const PageContent: React.FC = () => {
     <>
       {/* 筛选和操作栏 */}
       <Card className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden p-4 mb-6" style={{ borderColor: 'rgba(59, 130, 246, 0.3)' }}>
-        <div className="flex flex-row items-end gap-2 w-full">
+        <div className="flex flex-row items-end gap-4 w-full">
           <ViewFilter
             classNames={{
-              form: 'flex flex-row items-end gap-2 flex-nowrap flex-1 min-w-0',
-              group: 'flex flex-row items-end !gap-2 flex-nowrap flex-1 min-w-0',
-              field: 'flex flex-row items-center gap-2 !w-auto',
-              label: 'text-blue-200 whitespace-nowrap text-sm !w-20 !flex-none !justify-end',
-              input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 !w-48',
+              form: 'flex flex-row items-end gap-4 flex-wrap w-full',
+              group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
+              field: 'w-auto',
+              label: 'text-blue-200 whitespace-nowrap',
+              input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
               description: '',
               error: ''
             }}

@@ -163,7 +163,7 @@ export async function matchProcessRoute(params: {
 
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': token,
+      'Authorization': `Bearer ${token}`,
       'x-request-project': projectId,
       'X-Request-TimeZone': getTimezoneOffset(),
     }

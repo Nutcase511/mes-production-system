@@ -1,50 +1,24 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { LoadingDots } from '@/components/ui/loading-dots'
-import { useModel, useModelState, useModelGetItems, useModelList, createAPI } from '@airiot/client'
-import { useModelListWithOptions } from '@/hooks/useModelListSafe'
-import _ from 'lodash'
+import { useModel, createAPI } from '@airiot/client'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { DataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
+import { ViewDataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
 import Actions, { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
 import { Eye, Edit, Trash2 } from 'lucide-react'
-import FilterSchemaForm from '@/components/kesi/filter-form/filter-form'
+import { ViewFilter } from '@/components/kesi/view-filter/view-filter'
 const tableId = '生产计划'
 
 const filterFields = [
-  {
-    key: 'orderNo',
-    name: 'orderNo',
-    title: '计划编号',
-    fieldType: 'filter_string',
-    orientation: 'horizontal' as const,
-  },
-  {
-    key: 'productName',
-    name: 'productName',
-    title: '产品名称',
-    fieldType: 'filter_string',
-    orientation: 'horizontal' as const,
-  },
-  {
-    key: 'status',
-    name: 'status',
-    title: '派单状态',
-    fieldType: 'filter_enum',
-    enum1: ['待下发', '已下发', '生产中', '已完成', '已取消'],
-    enum_title1: ['待下发', '已下发', '生产中', '已完成', '已取消'],
-    orientation: 'horizontal' as const,
-  },
+  { key: 'orderNo' },
+  { key: 'productName' },
+  { key: 'planState' },
 ]
 
 const OrderListContent: React.FC = () => {
   const { model } = useModel()
-  const { items, loading } = useModelListWithOptions({ initQuery: false })
-  const [wheres, setWheres] = useModelState('wheres')
-  const { getItems } = useModelGetItems()
 
   // 从 model.form 获取字段顺序
   const fieldOrder = useMemo(() => {
@@ -68,7 +42,7 @@ const OrderListContent: React.FC = () => {
     const columns: React.ReactElement[] = []
 
     // 需要特殊渲染的枚举字段（显示为带颜色的 Badge）
-    const enumFields = ['select-0362', 'status']
+    const enumFields = ['select-0362', 'planState']
 
     // 需要特殊渲染的关联字段
     const relateFields = ['relatedProductionNoticeNo']
@@ -183,82 +157,24 @@ const OrderListContent: React.FC = () => {
     return columns
   }, [fieldOrder, model])
 
-  const properties = _.mapValues(model.properties || {}, (prop, key) => ({ ...prop, name: key }))
-
-  // 初始化查询：从 schema 获取所有字段
-  const initializedRef = useRef(false)
-  useEffect(() => {
-    if (model?.properties && !initializedRef.current) {
-      initializedRef.current = true
-      const fields = Object.keys(model.properties)
-
-      // 构建查询参数
-      const query = {
-        fields: fields,
-        withCount: true
-      }
-
-      getItems(query)
-    }
-  }, [model])
-
-  const onSubmit = (value: any) => {
-    const newWheres = { ...(wheres || {}), filter: { ...(wheres?.filter || {}), ...value } }
-    setWheres(newWheres)
-    getItems({ projectAll: true })
-  }
-
-  const onReset = (reset: () => void) => {
-    reset()
-    const newWheres = { ...(wheres || {}), filter: {} }
-    setWheres(newWheres)
-    getItems({ projectAll: true })
-  }
-
   return (
     <>
-      <Card className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden p-4 mb-4" style={{
-        borderColor: 'rgba(59, 130, 246, 0.3)'
-      }}>
-        <FilterSchemaForm
-          formId="order-list-filter"
-          schema={{ ...model, properties }}
-          filterSchema={filterFields}
-          onSubmit={onSubmit}
-          classNames={{
-            form: 'flex flex-row items-end gap-4 w-full',
-            group: '!flex !flex-row !items-end !gap-4',
-            field: '!flex !flex-row !items-center !gap-2 !w-auto',
-            label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
-            input: '!w-auto !min-w-[240px]',
-            description: '',
-            error: '',
-            }}
-        >
-          {(methods) => (
-            <div className="flex items-center gap-2">
-              <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 h-9 text-sm">
-                搜索
-              </Button>
-              <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
-                重置
-              </Button>
-              <CreateAction>
-                <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
-                  + 新建派单
-                </Button>
-              </CreateAction>
-            </div>
-          )}
-        </FilterSchemaForm>
-      </Card>
+      {/* 过滤器 */}
+      <ViewFilter
+        filters={filterFields}
+        classNames={{
+          form: 'flex flex-row items-end gap-4 flex-wrap w-full',
+          group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
+          field: 'w-auto',
+          label: 'text-blue-200 whitespace-nowrap',
+          input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
+          description: '',
+          error: ''
+        }}
+      />
 
-      {loading ? (
-        <LoadingDots />
-      ) : (
-        <DataTable
-          data={items as any[]}
-          tableLayout={{
+      <ViewDataTable
+        tableLayout={{
             border: true,
             headerSticky: true,
             columnsResizable: true,
@@ -276,8 +192,7 @@ const OrderListContent: React.FC = () => {
           gridOptions={{}}
         >
           {tableColumns}
-        </DataTable>
-      )}
+      </ViewDataTable>
 
       <div className="p-4">
         <ViewPagination

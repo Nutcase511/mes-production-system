@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
-import { login as apiLogin, logout as apiLogout } from '@/services/auth.service'
+import { login as apiLogin, logout as apiLogout, getCurrentUser } from '@/services/auth.service'
 import { useUser as useAiriotUser } from '@airiot/client'
 import type { CurrentUser } from '@/types/api'
 import { getToken, getUserStr, setToken, setUser as saveUser, removeToken, removeUser, isTokenExpired } from '@/lib/auth-token'
@@ -42,49 +42,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // 这会让 SDK 自动在 API 请求中添加 token
   const { setUser: setAiriotUser } = useAiriotUser()
 
-  useEffect(() => {
-    // 从localStorage恢复用户信息
-    // 不调用 API 验证 token，避免不必要的请求
-    // token 有效性会在后续 API 请求中自动验证
-    const restoreAuth = () => {
-      const storedUser = getUserStr()
-      const storedToken = getToken()
+ useEffect(() => {
+ // 从localStorage恢复用户信息，并通过服务端验证token有效性
+ const restoreAuth = async () => {
+ const storedUser = getUserStr()
+ const storedToken = getToken()
 
-      if (storedUser && storedToken && isTokenExpired()) {
-        removeUser()
-        removeToken()
-        setIsLoading(false)
-        return
-      }
+ // token已过期，直接清除
+ if (storedUser && storedToken && isTokenExpired()) {
+ removeUser()
+ removeToken()
+ setIsLoading(false)
+ return
+ }
 
-      if (storedUser && storedToken) {
-        try {
-          const parsedUser = JSON.parse(storedUser) as CurrentUser
+ if (storedUser && storedToken && storedToken !== 'null' && storedToken !== 'undefined') {
+ try {
+ // 向服务端验证token是否仍有效
+ const valid = await getCurrentUser().catch(() => null)
+ if (!valid) {
+ // token无效（过期/被吊销），清除登录态
+ removeUser()
+ removeToken()
+ setIsLoading(false)
+ return
+ }
 
-          // 只要 localStorage 中有 token 就认为已登录
-          // 不主动验证 token 有效性
-          // 实际的 token 验证会在后续 API 请求中进行
-          if (storedToken && storedToken !== 'null' && storedToken !== 'undefined') {
-            setUser(parsedUser)
-            setIsAuthenticated(true)
-            // 将用户信息（包含token）设置到 AIRIOT SDK
-            // SDK 会自动在 API 请求失败时处理认证错误
-            setAiriotUser({
-              ...parsedUser,
-              token: storedToken,
-            })
-          }
-        } catch (error) {
-          removeUser()
-          removeToken()
-        }
-      }
-      setIsLoading(false)
-    }
+ const parsedUser = JSON.parse(storedUser) as CurrentUser
+ setUser(parsedUser)
+ setIsAuthenticated(true)
+ setAiriotUser({
+ ...parsedUser,
+ token: storedToken,
+ })
+ } catch (error) {
+ // 解析失败，清除登录态
+ removeUser()
+ removeToken()
+ }
+ }
+ setIsLoading(false)
+ }
 
-    restoreAuth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // 只在组件挂载时执行一次
+ restoreAuth()
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [])
 
   const login = async (username: string, password: string, verifyCode?: string) => {
     try {

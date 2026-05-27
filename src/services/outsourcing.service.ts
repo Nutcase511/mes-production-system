@@ -16,7 +16,7 @@ const getHeaders = () => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   }
-  if (token) headers['Authorization'] = token
+  if (token) headers['Authorization'] = `Bearer ${token}`
   if (projectId) headers['x-request-project'] = projectId
 
   return headers

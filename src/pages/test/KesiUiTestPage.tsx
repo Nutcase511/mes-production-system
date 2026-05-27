@@ -464,7 +464,7 @@ function TableSection() {
               </div>
             </div>
             <TableDebugInfo />
-            <ViewPagination />
+            <div className="p-4"><ViewPagination /></div>
           </div>
         </ViewModel>
       </CardContent>

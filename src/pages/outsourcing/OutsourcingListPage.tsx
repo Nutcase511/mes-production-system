@@ -4,13 +4,13 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { LoadingDots } from '@/components/ui/loading-dots'
 import ViewModel from '@/components/kesi/view-model/view-model'
-import { DataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
+import { ViewDataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
 import Actions, { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
 import { Eye, Edit, Trash2 } from 'lucide-react'
 import { useModel, useModelState, useModelGetItems, useModelList , createAPI } from '@airiot/client'
 import { useModelListWithOptions } from '@/hooks/useModelListSafe'
-import FilterSchemaForm from '@/components/kesi/filter-form/filter-form'
+import { ViewFilter } from '@/components/kesi/view-filter/view-filter'
 
 const tableId = '生产计划'
 
@@ -257,44 +257,35 @@ const OutsourcingListContent: React.FC = () => {
   return (
     <>
       <Card className="backdrop-blur-xl bg-blue-500/10 border-2 rounded-xl overflow-hidden p-4 mb-4" style={{ borderColor: 'rgba(59, 130, 246, 0.3)' }}>
-        <FilterSchemaForm
-          formId="outsourcing-filter"
-          schema={{ ...model, properties: model?.properties || {} }}
-          filterSchema={filterFields}
-          onSubmit={onSubmit}
-          classNames={{
-            form: 'flex flex-row items-end gap-4 w-full',
-            group: '!flex !flex-row !items-end !gap-4',
-            field: '!flex !flex-row !items-center !gap-2 !w-auto',
-            label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
-            input: '!w-auto !min-w-[240px]',
-            description: '',
-            error: '',
+        <div className="flex flex-row items-end gap-4 w-full">
+          <ViewFilter
+            filters={filterFields}
+            schema={{ ...model, properties: model?.properties || {} }}
+            classNames={{
+              form: 'flex flex-row items-end gap-4 w-full',
+              group: '!flex !flex-row !items-end !gap-4',
+              field: '!flex !flex-row !items-center !gap-2 !w-auto',
+              label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
+              input: '!w-auto !min-w-[240px]',
+              description: '',
+              error: '',
             }}
-        >
-          {(methods) => (
-            <div className="flex items-center gap-2">
-              <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 h-9 text-sm">
-                搜索
+          />
+          <div className="flex items-center gap-2">
+            <CreateAction>
+              <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+                + 新建外协跟单
               </Button>
-              <Button type="button" variant="outline" className="text-cyan-300 border-cyan-500/60 hover:bg-cyan-500/20 px-4 py-1.5 h-9 text-sm" onClick={() => onReset(methods.reset)}>
-                重置
-              </Button>
-              <CreateAction>
-                <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
-                  + 新建外协跟单
-                </Button>
-              </CreateAction>
-            </div>
-          )}
-        </FilterSchemaForm>
+            </CreateAction>
+          </div>
+        </div>
       </Card>
 
       {loading ? (
         <LoadingDots />
       ) : (
         <>
-          <DataTable
+          <ViewDataTable
             data={items as any[]}
             tableLayout={{
               border: true,
@@ -314,7 +305,7 @@ const OutsourcingListContent: React.FC = () => {
             gridOptions={{}}
           >
             {tableColumns}
-          </DataTable>
+          </ViewDataTable>
 
           <div className="p-4"><ViewPagination showTotal={true} showSizeChanger={true} showQuickJumper={true} pageSizeOptions={[10, 20, 50, 100]} /></div>
         </>

@@ -82,7 +82,7 @@ export async function getWorkTimeQuotas(params: PageParams & {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': `Bearer ${token}`,
         'x-request-project': projectId,
         'X-Request-TimeZone': getTimezoneOffset(),
       },
@@ -170,7 +170,7 @@ export async function getWorkTimeRecords(params: PageParams & {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': `Bearer ${token}`,
         'x-request-project': projectId,
         'X-Request-TimeZone': getTimezoneOffset(),
       },
@@ -241,7 +241,7 @@ export async function createWorkTimeRecord(data: Partial<WorkTimeRecord>): Promi
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': `Bearer ${token}`,
         'x-request-project': projectId,
         'X-Request-TimeZone': getTimezoneOffset(),
       },
@@ -306,7 +306,7 @@ export async function verifyWorkTimeRecords(recordIds: string[], verifierId: str
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': `Bearer ${token}`,
         'x-request-project': projectId,
         'X-Request-TimeZone': getTimezoneOffset(),
       },
@@ -359,7 +359,7 @@ export async function getWorkTimeVerifications(params: PageParams): Promise<Page
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': `Bearer ${token}`,
         'x-request-project': projectId,
         'X-Request-TimeZone': getTimezoneOffset(),
       },

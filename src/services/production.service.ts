@@ -178,7 +178,7 @@ export async function getProductionOrders(params: PageParams & {
     }
 
     if (token) {
-      headers['Authorization'] = token
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     const projectId = import.meta.env.VITE_AIRIOT_PROJECT_ID || ''
@@ -419,7 +419,7 @@ export async function getProductionOrderSchema(): Promise<TableSchema> {
 
     // 添加认证token
     if (token) {
-      headers['Authorization'] = token
+      headers['Authorization'] = `Bearer ${token}`
     }
 
     // 添加项目ID
