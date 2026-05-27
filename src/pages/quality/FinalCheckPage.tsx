@@ -987,7 +987,6 @@ const FinalCheckContent: React.FC = () => {
 }
 
 export function FinalCheckPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -1000,7 +999,7 @@ export function FinalCheckPage() {
   }, [])
 
   return (
-    <ViewModel tableId={tableId} initQuery={false} queryFields={queryFields}>
+    <ViewModel tableId={tableId} initQuery={false}>
       <FinalCheckContent />
     </ViewModel>
   )

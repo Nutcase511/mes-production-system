@@ -271,6 +271,13 @@ const WorkOrderContent: React.FC = () => {
       {/* 过滤器 */}
       <ViewFilter
         filters={filterFields.map(f => ({ key: f.name }))}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建
+            </Button>
+          </CreateAction>
+        }
         classNames={{
           form: 'flex flex-row items-end gap-4 flex-wrap w-full',
           group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
@@ -337,7 +344,6 @@ const WorkOrderContent: React.FC = () => {
 }
 
 export function WorkOrderPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -351,7 +357,7 @@ export function WorkOrderPage() {
 
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={true} queryFields={queryFields}>
+      <ViewModel tableId={tableId} initQuery={true}>
           <WorkOrderContent />
         </ViewModel>
     </div>

@@ -6,7 +6,7 @@ import { ViewDataTable, TableColumn } from '@/components/kesi/view-data-table/vi
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
 import Actions, { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
 import { Eye, Edit, Trash2 } from 'lucide-react'
-import { useModel, useModelGetItems, createAPI } from '@airiot/client'
+import { useModel, useModelGetItems } from '@airiot/client'
 import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 import { LoadingDots } from '@/components/ui/loading-dots'
 import { ViewFilter } from '@/components/kesi/view-filter/view-filter'
@@ -101,6 +101,13 @@ const PageContent = () => {
           description: '',
           error: ''
         }}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建
+            </Button>
+          </CreateAction>
+        }
       />
       {loading ? (
         <LoadingDots text="加载中..." />
@@ -164,7 +171,6 @@ const PageContent = () => {
 }
 
 export function QualityCheckPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -181,7 +187,7 @@ export function QualityCheckPage() {
       <ViewModel
         tableId={tableId}
         initQuery={false}
-        queryFields={queryFields}
+       
         tableFilters={{
           'select-0362': '1'
         }}
@@ -192,4 +198,4 @@ export function QualityCheckPage() {
   )
 }
 
-export default QualityCheckPage
+export default QualityCheckPageHERMES_EOF

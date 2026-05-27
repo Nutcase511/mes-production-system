@@ -1,20 +1,30 @@
 import React, { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { LoadingDots } from '@/components/ui/loading-dots'
-import { useModel, createAPI } from '@airiot/client'
+import { useModel } from '@airiot/client'
 import ViewModel from '@/components/kesi/view-model/view-model'
 import { ViewDataTable, TableColumn } from '@/components/kesi/view-data-table/view-data-table'
 import ViewPagination from '@/components/kesi/view-pagination/view-pagination'
-import Actions, { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
+import { CreateAction, ViewAction, EditAction, DeleteAction } from '@/components/kesi/view-actions/view-actions'
 import { Eye, Edit, Trash2 } from 'lucide-react'
 import { ViewFilter } from '@/components/kesi/view-filter/view-filter'
 const tableId = '生产计划'
 
 const filterFields = [
-  { key: 'orderNo' },
-  { key: 'productName' },
-  { key: 'planState' },
+  {
+    key: 'orderNo',
+    title: '计划编号',
+  },
+  {
+    key: 'productName',
+    title: '产品名称',
+  },
+  {
+    key: 'planState',
+    title: '派单状态',
+    enum1: ['待下发', '已下发', '生产中', '已完成', '已取消'],
+    enum_title1: ['待下发', '已下发', '生产中', '已完成', '已取消'],
+  },
 ]
 
 const OrderListContent: React.FC = () => {
@@ -70,7 +80,6 @@ const OrderListContent: React.FC = () => {
           >
             {(props) => {
               const relateData = props.value
-              // 如果关联数据是对象，提取 notificationNumber
               if (relateData && typeof relateData === 'object') {
                 return (
                   <span className="text-blue-200">
@@ -159,39 +168,45 @@ const OrderListContent: React.FC = () => {
 
   return (
     <>
-      {/* 过滤器 */}
       <ViewFilter
         filters={filterFields}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建派单
+            </Button>
+          </CreateAction>
+        }
         classNames={{
-          form: 'flex flex-row items-end gap-4 flex-wrap w-full',
-          group: 'flex flex-row items-end gap-4 flex-1 min-w-0',
-          field: 'w-auto',
-          label: 'text-blue-200 whitespace-nowrap',
-          input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto',
+          form: 'flex flex-row items-end gap-4 w-full',
+          group: '!flex !flex-row !items-end !gap-4',
+          field: '!flex !flex-row !items-center !gap-2 !w-auto',
+          label: 'text-blue-200 whitespace-nowrap !w-[90px] !flex-none text-sm',
+          input: '!w-auto !min-w-[240px]',
           description: '',
-          error: ''
+          error: '',
         }}
       />
 
       <ViewDataTable
         tableLayout={{
-            border: true,
-            headerSticky: true,
-            columnsResizable: true,
-            columnsPinnable: true,
-            stripped: true,
-            dense: false,
-          }}
-          tableOptions={{
-            initialState: {
-              columnPinning: {
-                right: ['__actions__']
-              }
+          border: true,
+          headerSticky: true,
+          columnsResizable: true,
+          columnsPinnable: true,
+          stripped: true,
+          dense: false,
+        }}
+        tableOptions={{
+          initialState: {
+            columnPinning: {
+              right: ['__actions__']
             }
-          }}
-          gridOptions={{}}
-        >
-          {tableColumns}
+          }
+        }}
+        gridOptions={{}}
+      >
+        {tableColumns}
       </ViewDataTable>
 
       <div className="p-4">
@@ -207,21 +222,9 @@ const OrderListContent: React.FC = () => {
 }
 
 export function OrderListPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
-
-  React.useEffect(() => {
-    createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
-      .then((res: any) => {
-        const schema = res?.json?.schema || res?.json || res?.schema || res
-        if (schema?.properties) {
-          setQueryFields(Object.keys(schema.properties))
-        }
-      })
-  }, [])
-
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={true} queryFields={queryFields}>
+      <ViewModel tableId={tableId} initQuery={true}>
         <OrderListContent />
       </ViewModel>
     </div>

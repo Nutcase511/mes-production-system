@@ -718,7 +718,6 @@ const RouteListContent: React.FC = () => {
 }
 
 export function RouteListPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -732,7 +731,7 @@ export function RouteListPage() {
 
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={false} queryFields={queryFields}>
+      <ViewModel tableId={tableId} initQuery={false}>
         <RouteListContent />
       </ViewModel>
     </div>

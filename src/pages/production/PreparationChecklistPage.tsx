@@ -1063,7 +1063,7 @@ export function PreparationChecklistPage() {
 
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} queryFields={queryFields} initQuery={true} tableFilters={tableFilters}>
+      <ViewModel tableId={tableId} initQuery={true} tableFilters={tableFilters}>
         <PreparationChecklistContent />
       </ViewModel>
     </div>

@@ -23,7 +23,14 @@ const PageContent = () => {
                 { key: 'material-name'},
                 { key: 'status'},
               ]} 
-              classNames={{ form: 'flex flex-row items-end gap-4 flex-wrap w-full', group: 'flex flex-row items-end gap-4 flex-1 min-w-0', field: 'w-auto', label: 'text-blue-200 whitespace-nowrap', input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto', description: '', error: '' }} 
+              classNames={{ form: 'flex flex-row items-end gap-4 flex-wrap w-full', group: 'flex flex-row items-end gap-4 flex-1 min-w-0', field: 'w-auto', label: 'text-blue-200 whitespace-nowrap', input: 'bg-blue-500/10 border-blue-400/30 text-white placeholder:text-blue-300/50 w-auto', description: '', error: '' }}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建
+            </Button>
+          </CreateAction>
+        } 
             />
           </div>
           <div className="flex gap-2 items-center pt-4">

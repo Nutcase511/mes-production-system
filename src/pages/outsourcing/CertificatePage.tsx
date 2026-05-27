@@ -62,6 +62,13 @@ const CertificateContent: React.FC = () => {
           description: '',
           error: ''
         }}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建
+            </Button>
+          </CreateAction>
+        }
       />
 
       {/* 数据表格 */}

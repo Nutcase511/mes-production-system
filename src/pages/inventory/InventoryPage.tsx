@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { useModel, useModelGetItems, createAPI } from '@airiot/client'
+import { useModel, useModelGetItems } from '@airiot/client'
 import { useModelListWithOptions } from '@/hooks/useModelListSafe'
 
 import ViewModel from '@/components/kesi/view-model/view-model'
@@ -85,6 +85,13 @@ const InventoryContent: React.FC = () => {
           description: '',
           error: ''
         }}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建
+            </Button>
+          </CreateAction>
+        }
       />
 
       {/* 数据表格 */}
@@ -169,7 +176,6 @@ const InventoryContent: React.FC = () => {
 }
 
 export function InventoryPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -183,11 +189,11 @@ export function InventoryPage() {
 
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={false} queryFields={queryFields}>
+      <ViewModel tableId={tableId} initQuery={false}>
         <InventoryContent />
       </ViewModel>
     </div>
   )
 }
 
-export default InventoryPage
+export default InventoryPageHERMES_EOF

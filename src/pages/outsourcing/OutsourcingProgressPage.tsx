@@ -221,6 +221,13 @@ const OutsourcingProgressContent: React.FC = () => {
           description: '',
           error: ''
         }}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建
+            </Button>
+          </CreateAction>
+        }
       />
 
       {loading ? (
@@ -257,7 +264,6 @@ const OutsourcingProgressContent: React.FC = () => {
 }
 
 export function OutsourcingProgressPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -269,5 +275,5 @@ export function OutsourcingProgressPage() {
       })
   }, [])
 
-  return <div className="space-y-0"><ViewModel tableId={tableId} initQuery={false} queryFields={queryFields}><OutsourcingProgressContent /></ViewModel></div>
+  return <div className="space-y-0"><ViewModel tableId={tableId} initQuery={false}><OutsourcingProgressContent /></ViewModel></div>
 }

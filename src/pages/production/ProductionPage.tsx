@@ -686,7 +686,6 @@ export function ProductionPage() {
     ]
   }
 
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -700,7 +699,7 @@ export function ProductionPage() {
 
   return (
     <div className="space-y-0">
-      <ViewModel tableId={tableId} initQuery={true} queryFields={queryFields} tableFilters={tableFilters}>
+      <ViewModel tableId={tableId} initQuery={true} tableFilters={tableFilters}>
         <ProductionContent />
       </ViewModel>
     </div>

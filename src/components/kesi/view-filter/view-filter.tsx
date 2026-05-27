@@ -1,22 +1,24 @@
 import React from 'react';
 import { useModel, useSetModelState, useModelGetItems } from '@airiot/client';
 import { FilterForm } from '@/components/kesi/filter-form/filter-form';
-import type { ModelSchema } from '@/lib/model-types';
+import type { FormSchemaItem } from '@/lib/model-types';
 import { Button } from '@/components/ui/button';
 import { Search, RotateCcw } from 'lucide-react';
+
 interface ViewFilterProps {
-  filters?: Array<{
-    key: string
-  }>
-  schema?: ModelSchema
+  filters?: FormSchemaItem[]
+  schema?: any
   classNames?: Record<'form' | 'group' | 'field' | 'label' | 'input' | 'description' | 'error', string>
+  children?: React.ReactNode | ((props: { reset: () => void }) => React.ReactNode)
+  actions?: React.ReactNode
 }
 
-
 const ViewFilter: React.FC<ViewFilterProps> = ({
-  filters = [],
+  filters,
   schema,
-  classNames
+  classNames,
+  children,
+  actions
 }) => {
   const { model } = useModel()
   const setWheres = useSetModelState('wheres')
@@ -24,18 +26,14 @@ const ViewFilter: React.FC<ViewFilterProps> = ({
 
   const filterSchema = filters && filters.length > 0 ? filters : model.filterSchema
 
-  const onSubmit = (value: any) => {    
-    setWheres((w: any) => {
-      return { ...w, filter: { ...w.filter, ...value } }
-    });
+  const onSubmit = (value: any) => {
+    setWheres((w: any) => ({ ...w, filter: { ...w.filter, ...value } }));
     getItems()
   }
 
   const onReset = (reset: () => void) => {
     reset()
-    setWheres((w: any) => {
-      return { ...w, filter: {} }
-    });
+    setWheres((w: any) => ({ ...w, filter: {} }));
     getItems()
   }
 
@@ -68,6 +66,8 @@ const ViewFilter: React.FC<ViewFilterProps> = ({
               <RotateCcw className="h-4 w-4 mr-1" />
               重置
             </Button>
+            {actions}
+            {typeof children === 'function' ? children({ reset: methods.reset }) : children}
           </div>
         )}
       </FilterForm>

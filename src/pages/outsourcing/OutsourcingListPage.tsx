@@ -270,6 +270,13 @@ const OutsourcingListContent: React.FC = () => {
               description: '',
               error: '',
             }}
+        actions={
+          <CreateAction>
+            <Button className="bg-gradient-to-r from-blue-400 to-cyan-400 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] px-4 py-1.5 h-9 text-sm">
+              + 新建
+            </Button>
+          </CreateAction>
+        }
           />
           <div className="flex items-center gap-2">
             <CreateAction>
@@ -315,7 +322,6 @@ const OutsourcingListContent: React.FC = () => {
 }
 
 export function OutsourcingListPage() {
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -332,7 +338,7 @@ export function OutsourcingListPage() {
       <ViewModel
         tableId={tableId}
         initQuery={false}
-        queryFields={queryFields}
+       
         tableFilters={{
           'select-0362': '1'
         }}

@@ -515,7 +515,6 @@ export function FirstCheckPage() {
     'productionStatus': '2'
   }
 
-  const [queryFields, setQueryFields] = React.useState<string[] | undefined>(undefined)
 
   React.useEffect(() => {
     createAPI({ resource: `core/t/schema/${encodeURIComponent(tableId)}` }).fetch('')
@@ -531,7 +530,7 @@ export function FirstCheckPage() {
     <ViewModel
       tableId={tableId}
       initQuery={true}
-      queryFields={queryFields}
+     
       tableFilters={tableFilters}
     >
       <FirstCheckContent />
